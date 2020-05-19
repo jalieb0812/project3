@@ -27,7 +27,7 @@ class Menu_Item(models.Model):
     ('XL', 'Extra_Large')
     )
 
-    category = models.CharField(max_length=1, null=True, blank=True, choices=MENU_CATEGORIES,
+    category = models.CharField(max_length=36, null=True, blank=True, choices=MENU_CATEGORIES,
                                 help_text='Enter the category of the menu item')
 
     name = models.CharField(max_length=128, help_text='Enter name of the menu item')
@@ -39,13 +39,13 @@ class Menu_Item(models.Model):
 
 
     def __str__(self):
-        return f" Category:{self.category} - Name:{self.name} - Sizes:{self.size} - Price: {self.price}"
+        return f" Category:{self.category} - Name:{self.name} - Sizes:{self.sizes} - Price: {self.price}"
 
-class Toppings(models.Model):
-    name = models.CharField(max_length=36)
+class Topping(models.Model):
+    topping_name = models.CharField(max_length=36)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.topping_name}"
 
 class Extras(models.Model):
     name = models.CharField(max_length=64, help_text='Enter name of the extra')
@@ -75,13 +75,14 @@ class Pizza(models.Model):
 
     num_toppings = models.IntegerField(default=0)
 
-    toppings = models.ManyToManyField(Toppings, verbose_name="Toppings",  blank=True,  related_name="reg_toppings")
+    toppings = models.ManyToManyField(Topping, verbose_name="Toppings",
+                                related_name = "rtoppings",  blank=True)
 
     #total_price= price + topping_price
 
     def __str__(self):
         return f" Item:{self.name} Size:{self.size} Number of toppings: {self.num_toppings}; \
-        toppings {self.toppings} price$: {self.price}"
+        price$: {self.price}"
 
 
 class Sicilian_Pizza(models.Model):
@@ -104,7 +105,8 @@ class Sicilian_Pizza(models.Model):
 
     num_toppings = models.IntegerField(default=0)
 
-    toppings = models.ManyToManyField(Toppings, verbose_name="Toppings",  blank=True, related_name="Sic_toppings")
+    toppings = models.ManyToManyField(Topping, verbose_name="Toppings",
+                                related_name = "stoppings",  blank=True)
 
     def __str__(self):
         return f" Item{self.name} Size:{self.size}; Number of toppings {self.num_toppings}; \

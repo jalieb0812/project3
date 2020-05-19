@@ -1,0 +1,53 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+  Menu
+{% endblock %}
+
+  {% block body %}
+    <h1>Menu</h1>
+
+    <ul>
+
+      {% for item in Menu_Item %}
+      <li>
+          {{ item}}
+
+      </li>
+
+          {% endfor %}
+
+
+        {% for pizza in Pizza %}
+        <li>
+            {{ pizza }}
+
+            {{ pizza.toppings}}
+        </li>
+
+            {% endfor %}
+
+            {% for topping in Pizza %}
+            <li>
+                {{ pizza.Topping }}
+
+                {{ pizza.rtoppings}}
+            </li>
+
+                {% endfor %}
+    </ul>
+
+    <h2>Toppings</h2>
+
+    <ul>
+        {% for topping in Pizza %}
+
+        <li>{{ topping }}</li>
+
+        {% empty %}
+        <li> No Toppings.</li>
+          {% endfor %}
+
+    </ul>
+
+{% endblock %}
