@@ -11,15 +11,16 @@ class Pizza(models.Model):
 
     name = "Regular Pizza"
 
-    size = models.CharField(max_length=10) #maybe extra Large
+    size = models.CharField(max_length=10, help_text='Enter Size of Pizza: Small or Large') #maybe extra Large
 
 
     price =  models.DecimalField(max_digits=4,decimal_places=2)
     #topings = model.
 
-    topping_price = 0
-    num_toppings = models.IntegerField(blank=True, default=0)
+    topping_price = models.DecimalField(max_digits=2,decimal_places=2)
+    num_toppings = models.DecimalField(max_digits=10, decimal_places=0, default=0)
 
+    """
     if num_toppings == 1:
         topping_price = 12.70
 
@@ -28,10 +29,10 @@ class Pizza(models.Model):
 
     if num_toppings == 3:
         topping_price = 16.20
-
+    """
     reg_toppings = models.ForeignKey(Toppings, on_delete=models.CASCADE, related_name="Reg_extras")
 
-    total_price= price + topping_price
+    #total_price= price + topping_price
 
     def __str__(self):
         return f" Item:{self.name} Size:{self.size} Number of toppings: {self.num_toppings}; \
