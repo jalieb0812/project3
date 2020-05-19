@@ -75,7 +75,7 @@ class Pizza(models.Model):
 
     num_toppings = models.IntegerField(default=0)
 
-    toppings = models.ManyToManyField(Toppings, verbose_name="Toppings",  related_name="reg_toppings")
+    toppings = models.ManyToManyField(Toppings, verbose_name="Toppings",  blank=True,  related_name="reg_toppings")
 
     #total_price= price + topping_price
 
@@ -104,7 +104,7 @@ class Sicilian_Pizza(models.Model):
 
     num_toppings = models.IntegerField(default=0)
 
-    toppings = models.ManyToManyField(Toppings, verbose_name="Toppings",  related_name="Sic_toppings")
+    toppings = models.ManyToManyField(Toppings, verbose_name="Toppings",  blank=True, related_name="Sic_toppings")
 
     def __str__(self):
         return f" Item{self.name} Size:{self.size}; Number of toppings {self.num_toppings}; \
@@ -129,7 +129,7 @@ class Subs(models.Model):
 
     price = models.DecimalField(max_digits=4,decimal_places=2, help_text='Enter sub price')
 
-    extras = models.ManyToManyField(Extras, verbose_name="Extras",  related_name="sub_extra")
+    extras = models.ManyToManyField(Extras, verbose_name="Extras",  blank=True,  related_name="sub_extra")
 
     def __str__(self):
         return f" Sub:{self.name}- Size:{self.size}  price$: {self.price}"
