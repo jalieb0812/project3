@@ -47,7 +47,7 @@ class Sicilian_Pizza(models.Model):
     price = models.DecimalField(max_digits=4,decimal_places=2)
 
     num_toppings = models.IntegerField(blank=True, default=0)
-    
+
     sic_toppings = models.ForeignKey(Toppings, on_delete=models.CASCADE, related_name="Sic_extras")
 
     def __str__(self):
