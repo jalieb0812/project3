@@ -1,0 +1,52 @@
+
+
+main {
+
+  overflow-x: auto;
+  /* scroll horizontally as needed */
+
+
+  /* center contents */
+  text-align: center;
+
+}
+
+.my-menu-flex-container{
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  scroll-behavior: auto;
+
+  overflow-x: auto;
+
+  overflow-y: auto;
+
+
+}
+
+.my-flex-container{
+  border: 2px solid green;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.my-flex-container-column{
+  border: 2px solid green;
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+.my-flex-item {
+  background-color: lightgrey;
+  border: 1px dotted grey;
+  height: 48px;
+
+}
+
+.my-flex-item-2{
+  background-color: lightgrey;
+  border: 1px dotted grey;
+  height: 96px;
+}

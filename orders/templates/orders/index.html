@@ -1,53 +1,75 @@
 {% extends "orders/base.html" %}
 
 {% block title %}
-  Menu
+Menu
 {% endblock %}
 
-  {% block body %}
-    <h1>Menu</h1>
-
-    <ul>
-
-      {% for item in Menu_Item %}
-      <li>
-          {{ item}}
-
-      </li>
-
-          {% endfor %}
+{% block body %}
+{% load static %}
 
 
-        {% for pizza in Pizza %}
-        <li>
-            {{ pizza }}
 
-            {{ pizza.toppings}}
-        </li>
 
-            {% endfor %}
+<div class="my-menu-flex-container">
 
-            {% for topping in Pizza %}
-            <li>
-                {{ pizza.Topping }}
+<div class="flex-container">
 
-                {{ pizza.rtoppings}}
-            </li>
+<h1>Menu Items</h1>
 
-                {% endfor %}
-    </ul>
+  <table id="full_menu" class="table-responsive display table-bordered table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">Category</th>
+        <th scope="col">Type</th>
+        <th scope="col">Size</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in menu_item %}
+      <tr>
+        <th scope="row">{{item.category}}</th>
 
-    <h2>Toppings</h2>
+        <td>{{item.name}}</td>
+        <td>{{item.sizes}}</td>
+        <td>{{item.price}}</td>
 
-    <ul>
-        {% for topping in Pizza %}
+      </tr>
+    {% endfor %}
 
-        <li>{{ topping }}</li>
+  </tbody>
+    </table>
+</div>
+</div>
 
-        {% empty %}
-        <li> No Toppings.</li>
-          {% endfor %}
 
-    </ul>
+
+
+<!--
+<h3>pizza table</h3>
+  <table class="table-responsive display table-bordered table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+        <th scope="col">Size</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for pizza_type in pizza_categories %}
+      <tr>
+        <th scope="row">{{pizza_type.name}}</th>
+
+        <td>{{pizza_type.sizes}}</td>
+        <td>{{pizza_type.price}}</td>
+
+      </tr>
+    {% endfor %}
+
+    </tbody>
+  </table>
+
+</div>
+-->
 
 {% endblock %}

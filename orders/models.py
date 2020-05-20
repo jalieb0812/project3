@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+#you can also run python manage.py check; this checks for any problems in
+#your project without making migrations or touching the database.
 
 class Menu_Item(models.Model):
 
@@ -75,13 +77,12 @@ class Pizza(models.Model):
 
     num_toppings = models.IntegerField(default=0)
 
-    toppings = models.ManyToManyField(Topping, verbose_name="Toppings",
-                                related_name = "rtoppings",  blank=True)
+    toppings = models.ManyToManyField(Topping, related_name = "rpizza_toppings",  blank=True)
 
     #total_price= price + topping_price
 
     def __str__(self):
-        return f" Item:{self.name} Size:{self.size} Number of toppings: {self.num_toppings}; \
+        return f" R_Pizza id: {self.id} - Item:{self.name} Size:{self.size} Number of toppings: {self.num_toppings}; \
         price$: {self.price}"
 
 
@@ -105,11 +106,10 @@ class Sicilian_Pizza(models.Model):
 
     num_toppings = models.IntegerField(default=0)
 
-    toppings = models.ManyToManyField(Topping, verbose_name="Toppings",
-                                related_name = "stoppings",  blank=True)
+    toppings = models.ManyToManyField(Topping, related_name = "spizza_toppings",  blank=True)
 
     def __str__(self):
-        return f" Item{self.name} Size:{self.size}; Number of toppings {self.num_toppings}; \
+        return f" S_pizza id: {self.id} - Item{self.name} Size:{self.size}; Number of toppings {self.num_toppings}; \
         toppings: {self.toppings}; price$: {self.price}"
 
 
@@ -131,10 +131,10 @@ class Subs(models.Model):
 
     price = models.DecimalField(max_digits=4,decimal_places=2, help_text='Enter sub price')
 
-    extras = models.ManyToManyField(Extras, verbose_name="Extras",  blank=True,  related_name="sub_extra")
+    sub_extras = models.ManyToManyField(Extras,  blank=True, related_name="sub_extra") #verbose name =Sub extras
 
     def __str__(self):
-        return f" Sub:{self.name}- Size:{self.size}  price$: {self.price}"
+        return f" Sub id: {self.id} - Sub:{self.name}- Size:{self.size}  price$: {self.price}"
 
 
 class Pasta(models.Model):
@@ -143,7 +143,7 @@ class Pasta(models.Model):
     price = models.DecimalField(max_digits=4,decimal_places=2, help_text='Enter pasta price')
     #type =
     def __str__(self):
-        return f" Pasta_type: {self.name} price$: {self.price}"
+        return f" Pasta id: {self.id} - Pasta_type: {self.name} price$: {self.price}"
 
 class Salad(models.Model):
 
@@ -151,7 +151,7 @@ class Salad(models.Model):
     price = models.DecimalField(max_digits=4,decimal_places=2, help_text='Enter salad price')
     #type =
     def __str__(self):
-        return f" Salad_type: {self.name} price$: {self.price}"
+        return f" Salad id: {self.id} - Salad_type: {self.name} price$: {self.price}"
 
 class Dinner_Platter(models.Model):
 
@@ -159,4 +159,4 @@ class Dinner_Platter(models.Model):
     price = models.DecimalField(max_digits=4,decimal_places=2, help_text='Enter Diiner Platter price')
     #type =
     def __str__(self):
-        return f" Salad_type: {self.name} price$: {self.price}"
+        return f" Dinner Platter id: {self.id} - Dinner_Platter_type: {self.name} price$: {self.price}"
