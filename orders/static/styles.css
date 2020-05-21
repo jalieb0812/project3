@@ -2,32 +2,73 @@
 
 main {
 
-  overflow-x: auto;
+
   /* scroll horizontally as needed */
 
+  position: relative;
 
   /* center contents */
-  text-align: center;
+
+  align-content: center;
+
+  margin-top: 20px;
 
 }
+
+.flex-container{
+
+  margin-top: 36px;
+}
+.flex-row{
+
+  justify-content: center;
+  align-items: : center;
+}
+
+h2{
+
+  margin-top: 36px;
+}
+
 
 .my-menu-flex-container{
 
   display: flex;
 
-  justify-content: flex-end;
+  flex-wrap: wrap;
+
+
+  justify-content: center;
 
   scroll-behavior: auto;
 
-  overflow-x: auto;
+  width: 90%;
 
-  overflow-y: auto;
+  height: 90%;
+
+  padding: 14px 16px;
+
+  margin-top: 20px;
+
+
+
+  height: 95vh;
 
 
 }
 
+.category_title{
+
+  justify-content: center;
+  align-items: center;
+
+  text: center;
+
+}
 .my-flex-container{
-  border: 2px solid green;
+  border: 2px solid
+
+  margin: 15px; green;
   height: 100px;
   margin-bottom: 20px;
 }
@@ -41,7 +82,8 @@ main {
 .my-flex-item {
   background-color: lightgrey;
   border: 1px dotted grey;
-  height: 48px;
+  height: auto;
+  align-items: flex-end;
 
 }
 

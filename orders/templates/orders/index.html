@@ -12,9 +12,204 @@ Menu
 
 <div class="my-menu-flex-container">
 
-<div class="flex-container">
 
-<h1>Menu Items</h1>
+      <div class="flex-row">
+
+
+<div class="col-sm">
+
+
+
+
+    <h2 id="pizza" >Pizzas</h2>
+
+
+    <table  class="table  table-bordered table-hover">
+      <thead>
+
+
+        <tr>
+          <th scope="col">Category</th>
+          <th scope="col">Type</th>
+          <th scope="col">Size</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for item in pizza_categories %}
+
+        <tr>
+          <th scope="row">{{item.category}}</th>
+
+          <td>{{item.name}}</td>
+          <td>{{item.sizes}}</td>
+          <td>{{item.price}}</td>
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+
+    <br>
+  </div>
+
+<div class="col-sm">
+
+
+    <h4 id="pastas">Pastas</h4>
+
+
+    <table id="pasta_menu" class="table  table-bordered table-hover ">
+      <thead>
+
+
+        <tr>
+          <th scope="col">Category</th>
+          <th scope="col">Type</th>
+          <th scope="col">Size</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for item in pasta_categories %}
+
+        <tr>
+          <th scope="row">{{item.category}}</th>
+
+          <td>{{item.name}}</td>
+          <td>{{item.sizes}}</td>
+          <td>{{item.price}}</td>
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+
+    <br>
+
+    <h4 id="salads">Salads</h4>
+
+
+    <table id="salad_menu" class="table  table-bordered table-hover ">
+      <thead>
+
+
+        <tr>
+          <th scope="col">Category</th>
+          <th scope="col">Type</th>
+          <th scope="col">Size</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for item in salad_categories %}
+
+        <tr>
+          <th scope="row">{{item.category}}</th>
+
+          <td>{{item.name}}</td>
+          <td>{{item.sizes}}</td>
+          <td>{{item.price}}</td>
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+
+    <br>
+</div>
+
+
+<div class="col-sm">
+
+
+    <h4 id="subs">Subs</h4>
+
+
+    <table id="sub_menu" class="table  table-bordered table-hover ">
+      <thead>
+
+
+        <tr>
+          <th scope="col">Category</th>
+          <th scope="col">Type</th>
+          <th scope="col">Size</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for item in sub_categories %}
+
+        <tr>
+          <th scope="row">{{item.category}}</th>
+
+          <td>{{item.name}}</td>
+          <td>{{item.sizes}}</td>
+          <td>{{item.price}}</td>
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+
+    <br>
+
+    <h4 id="dinner_platters">Dinner Platters</h4>
+
+
+    <table id="dinner_platters_menu" class="table  table-bordered table-hover ">
+      <thead>
+
+
+        <tr>
+          <th scope="col">Category</th>
+          <th scope="col">Type</th>
+          <th scope="col">Size</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for item in dinner_platter_categories %}
+
+        <tr>
+          <th scope="row">{{item.category}}</th>
+
+          <td>{{item.name}}</td>
+          <td>{{item.sizes}}</td>
+          <td>{{item.price}}</td>
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+
+    <br>
+</div>
+
+
+      </div>
+
+
+
+
+
+<!--
+<h1>Menu Items2</h1>
 
   <table id="full_menu" class="table-responsive display table-bordered table-hover table-sm">
     <thead>
@@ -27,6 +222,8 @@ Menu
     </thead>
     <tbody>
     {% for item in menu_item %}
+
+
       <tr>
         <th scope="row">{{item.category}}</th>
 
@@ -42,7 +239,7 @@ Menu
 </div>
 </div>
 
-
+-->
 
 
 <!--
@@ -70,6 +267,111 @@ Menu
   </table>
 
 </div>
+
+
+<div class="col-sm">
+
+
+  <!--
+<h1>Menu Items</h1>
+
+
+
+
+<table id="full_menu" class="table-responsive  table-bordered table-hover table-sm">
+<thead>
+
+
+<tr>
+<th scope="col">Category</th>
+<th scope="col">Type</th>
+<th scope="col">Size</th>
+<th scope="col">Price</th>
+</tr>
+</thead>
+<tbody>
+
+{% for item in menu_item %}
+
+{% if item.category == "Pizza" %}
+
+<tr>
+
+<th scope="row">{{item.category}}</th>
+
+<td>{{item.name}}</td>
+<td>{{item.sizes}}</td>
+<td>{{item.price}}</td>
+
+</tr>
+{% endif %}
+
+
+
+{% if item.category == "Pasta" %}
+<tr>
+
+<th scope="row">{{item.category}}</th>
+
+<td>{{item.name}}</td>
+<td>{{item.sizes}}</td>
+<td>{{item.price}}</td>
+
+</tr>
+{% endif %}
+
+
+
+
+{% if item.category == "Subs" %}
+<tr>
+
+<th scope="row">{{item.category}}</th>
+
+<td>{{item.name}}</td>
+<td>{{item.sizes}}</td>
+<td>{{item.price}}</td>
+
+</tr>
+{% endif %}
+
+{% if item.category == "Salad" %}
+<tr>
+
+<th scope="row">{{item.category}}</th>
+
+<td>{{item.name}}</td>
+<td>{{item.sizes}}</td>
+<td>{{item.price}}</td>
+
+</tr>
+{% endif %}
+
+{% if item.category == "Dinner_Platter" %}
+<tr>
+
+<th scope="row">{{item.category}}</th>
+
+<td>{{item.name}}</td>
+<td>{{item.sizes}}</td>
+<td>{{item.price}}</td>
+
+</tr>
+{% endif %}
+
+
+{% endfor %}
+
+
+</tbody>
+
+</table>
+
+<br>
+
+</div>
+
 -->
+
 
 {% endblock %}
