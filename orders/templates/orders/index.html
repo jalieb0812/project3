@@ -1,13 +1,54 @@
 {% extends "orders/base.html" %}
 
-{% block title %}
-Menu
+
+
+{% block title %}{{ block.super }} - Menu{% endblock %}
+
+{% block head %}
+{% load static %}
+<script> </script>
 {% endblock %}
 
 {% block body %}
-{% load static %}
 
 
+<h1 class="text-center">Menu</h1>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark  justify-content-center fixed-top">
+
+
+  <ul class="navbar-nav">
+    <li class="nav-item">
+          <a class="nav-link active" href="#pizza">Pizza</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#pastas">Pasta</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#salads">Salad</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#subs">Subs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#dinner_platters">Dinner Platters</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Menu</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/login">login</a>
+            <a class="dropdown-item" href="logout">logout</a>
+            <a class="dropdown-item" href="/register">register</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="" style="color: white">
+             Hello: {{ user.username }}
+          </div>
+          </li>
+      </ul>
+
+    </nav>
 
 
 <div class="my-menu-flex-container">
@@ -207,11 +248,13 @@ Menu
 
 
 
-
 <!--
+
 <h1>Menu Items2</h1>
 
   <table id="full_menu" class="table-responsive display table-bordered table-hover table-sm">
+
+
     <thead>
       <tr>
         <th scope="col">Category</th>
@@ -232,12 +275,23 @@ Menu
         <td>{{item.price}}</td>
 
       </tr>
+  {% for category in categories %}
+      <tr>
+        <th>
+            {{category}}
+        </th>
+      </tr>
+        {% endfor %}
+
     {% endfor %}
+
+
+
 
   </tbody>
     </table>
 </div>
-</div>
+
 
 -->
 
