@@ -1,8 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 #you can also run python manage.py check; this checks for any problems in
 #your project without making migrations or touching the database.
+
+
+
+
+
 
 class Menu_Item(models.Model):
 
@@ -42,6 +48,26 @@ class Menu_Item(models.Model):
 
     def __str__(self):
         return f" Category:{self.category} - Name:{self.name} - Sizes:{self.sizes} - Price: {self.price}"
+
+
+class Items(models.Model):
+
+    category = models.CharField(max_length=36, null=True, blank=True, help_text='Enter the category of the menu item')
+
+    name = models.CharField(max_length=128, help_text='Enter name of the menu item')
+
+    price = price =  models.DecimalField(max_digits=4, null=True, blank=True, decimal_places=2)
+
+    sizes = models.CharField(max_length=4, null=True, blank=True,  help_text='Enter the allowable sizes of the menu item')
+
+
+    def __str__(self):
+        return f" Category:{self.category} - Name:{self.name} - Sizes:{self.sizes} - Price: {self.price}"
+
+
+
+
+
 
 class Topping(models.Model):
     topping_name = models.CharField(max_length=36)
@@ -160,3 +186,50 @@ class Dinner_Platter(models.Model):
     #type =
     def __str__(self):
         return f" Dinner Platter id: {self.id} - Dinner_Platter_type: {self.name} price$: {self.price}"
+
+
+class OrderItem(models.Model):
+    menu_item = models.OneToOneField(Menu_Item, on_delete=models.SET_NULL, null=True)
+    is_ordered = models.BooleanField(default=False)
+    date_added = models.DateTimeField(auto_now=True)
+    date_ordered = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return f"{self.menu_item} - {self.date_added} - {self.date_ordered}"
+
+
+
+class Order(models.Model):
+    ref_code = models.CharField(max_length=15)
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    is_ordered = models.BooleanField(default=False)
+    ordered_item = models.ManyToManyField(OrderItem)
+    # payment_details = models.ForeignKey(Payment, null=True)
+    date_ordered = models.DateTimeField(auto_now=True)
+
+
+    #get all the orders items
+    def get_cart_items(self):
+        return self.ordered_item.all()
+
+        #sum of total price of all ordered items
+    def get_cart_total(self):
+        return sum([ordered_item.menu_item.price for item in self.items.all()])
+
+    def __str__(self):
+        return '{0} - {1}'.format(self.owner, self.ref_code)
+
+
+class Transaction(models.Model):
+    profile = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=120)
+    order_id = models.CharField(max_length=120)
+    amount = models.DecimalField(max_digits=100, decimal_places=2)
+    success = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+    def __str__(self):
+        return self.order_id
+
+    class Meta:
+        ordering = ['-timestamp']
