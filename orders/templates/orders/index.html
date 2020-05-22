@@ -2,35 +2,16 @@
 
 
 
-{% block title %}{{ block.super }} - Menu{% endblock %}
+{% block title %} Menu{% endblock %}
 
-{% block head %}
+
 {% load static %}
 <script> </script>
-{% endblock %}
 
-{% block body %}
-<!--
-{{ message }}
-<div class="row">
-{% for object in object_list %}
-    <div class="col-sm-3">
-        <p>{{ object.name }}</p>
-        <p>Price: ${{ object.price }}</p>
-        {% if object in user.profile.ebooks.all %}
-        <!-- add a button here to see the product -->
 
-        <!--
-        You own this
-        {% elif object in current_order_products %}
-        <a href="{% url 'shopping_cart:order_summary' %}" class="btn btn-warning">Go to Cart</a>
-        {% else %}
-        <a href="{% url 'shopping_cart:add_to_cart' object.id %}" class="btn btn-warning">Add to Cart</a>
-        {% endif %}
-    </div>
-{% endfor %}
-</div>
--->
+{% block content %}
+
+
 
 <h1 class="text-center">Menu</h1>
 
@@ -56,12 +37,14 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Menu</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/login">login</a>
+            <a class="dropdown-item" href= "{% url 'orders:login' %}">login</a>
             <a class="dropdown-item" href="logout">logout</a>
-            <a class="dropdown-item" href="/register">register</a>
+            <a class="dropdown-item" href="{% url 'orders:register' %}">register</a>
           </div>
         </li>
         <li class="nav-item">
+
+
           <div class="" style="color: white">
              Hello: {{ user.username }}
           </div>
@@ -106,12 +89,13 @@
           <td>{{item.name}}</td>
           <td>{{item.sizes}}</td>
           <td>{{item.price}}</td>
-
           {% if item in current_order_products %}
-          <a href="{% url 'shopping_cart:order_summary' %}" class="btn btn-warning">Go to Cart</a>
+          <td><a href="{% url 'orders:order_summary' %}" class="btn btn-warning">Go to Cart</a></td>
           {% else %}
-          <a href="{% url 'shopping_cart:add_to_cart' object.id %}" class="btn btn-warning">Add to Cart</a>
+         <td><a href="{% url 'orders:add_to_cart' item.id %}" class="btn btn-warning">Add to Cart</a></td>
           {% endif %}
+
+
         </tr>
         {% endfor %}
 
@@ -271,9 +255,18 @@
       </div>
 
 
-
+{% endblock %}
 
 <!--
+
+ifchanged
+Check if a value has changed from the last iteration of a loop.
+
+The  block tag is used within a loop. It has two possible uses.
+
+Checks its own rendered contents against its previous state and only displays the content if it has changed. For example, this displays a list of days, only displaying the month if it changes:
+
+
 
 <h1>Menu Items2</h1>
 
@@ -290,7 +283,8 @@
     </thead>
     <tbody>
     {% for item in menu_item %}
-
+    {% ifchanged menu_item.category %}   <tr class="menu_item.category">
+    {{ menu_item.category }} </tr> {% endifchanged %}
 
       <tr>
         <th scope="row">{{item.category}}</th>
@@ -451,6 +445,3 @@
 </div>
 
 -->
-
-
-{% endblock %}

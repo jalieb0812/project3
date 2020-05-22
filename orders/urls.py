@@ -1,34 +1,31 @@
-from django.urls import path
+from django.urls import path, re_path
 
 from django.conf.urls import url
 
-from . import views,
-(
-    add_to_cart,
-    #delete_from_cart,
-    order_details,
-    #checkout,
-    #update_transaction_records,
-    #success
-)
+from . import views
 
+
+app_name = 'orders'
 #list of urls supported by this app (orders)
 urlpatterns = [
     path("", views.index, name="index"),
-    path("register", views.register_view, name="register"),
+    path("register", views.register, name="register"),
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
 
 
     # item_id sent over by object_id from index
-    url(r'^add-to-cart/(?P<item_id>[-\w]+)/$', add_to_cart, name="add_to_cart"),
+    #path('cart/add/<int:item_id>', views.add_item, name='add_item'),
+    path('add-to-cart/<int:ordered_item_id>', views.add_to_cart, name="add_to_cart"),
 
+    path(r'^order-summary/$', views.order_details, name="order_summary"),
+    path(r'^success/$', views.success, name='purchase_success'),
+    path(r'^item/delete/(?P<item_id>[-\w]+)/$', views.delete_from_cart, name='delete_item'),
+    path(r'^checkout/$', views.checkout, name='checkout'),
+    #below payment route not implented
+    path(r'^payment/(?P<order_id> [-\w]+)/$', views.process_payment, name='process_payment' ),
+    path(r'^update-transaction/(?P<order_id>[-\w]+)/$', views.update_transaction_records,
+        name='update_records') # redirects to the update
 
-    url(r'^order-summary/$', order_details, name="order_summary"),
-    #url(r'^success/$', success, name='purchase_success'),
-    #url(r'^item/delete/(?P<item_id>[-\w]+)/$', delete_from_cart, name='delete_item'),
-    #url(r'^checkout/$', checkout, name='checkout'),
-    #url(r'^update-transaction/(?P<token>[-\w]+)/$', update_transaction_records,
-        #name='update_records')
-
+    #probably change url to path in this paths
 ]
