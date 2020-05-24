@@ -65,8 +65,11 @@
             <td> <strong>${{ order.get_cart_total }}</strong></td>
           </tr>
         </table>
+<form action="process_payment" method="post" id="payment-form"">
+          <a <button type="submit"  href="{% url 'orders:process_payment' order.id %}" class="pull-right btn btn-primary">Checkout</button> </a>
 
-        <a <button  href="{% url 'orders:success' %}" class="pull-right btn btn-primary">Checkout</button> </a>
+</form>
+
       </div>
      </div>
     </section>

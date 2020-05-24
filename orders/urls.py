@@ -25,8 +25,8 @@ urlpatterns = [
     path(r'^checkout/$', views.checkout, name='checkout'),
     #below payment route not implented
     path(r'^payment/(?P<order_id> [-\w]+)/$', views.process_payment, name='process_payment' ),
-    path(r'^update-transaction/(?P<order_id>[-\w]+)/$', views.update_transaction_records,
-        name='update_records') # redirects to the update
+    path('updaterecords/<int:order_id>', views.updaterecords, name='updaterecords'), # redirects to the update
+    path('profile', views.profile, name='profile')
 
     #probably change url to path in this paths
 ]

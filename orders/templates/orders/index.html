@@ -40,6 +40,7 @@
             <a class="dropdown-item" href= "login">login</a>
             <a class="dropdown-item" href="logout">logout</a>
             <a class="dropdown-item" href="register">register</a>
+            <a class="dropdown-item" href="profile">my_profiler</a>
           </div>
         </li>
         <li class="nav-item">
@@ -75,6 +76,11 @@
                 <th scope="col">Type</th>
                 <th scope="col">Size</th>
                 <th scope="col">Price</th>
+                {% if current_order_products %}
+                <th><a href="{% url 'orders:ordersummary' %}" class="btn btn-warning">Go to Cart</a></th>
+                {% else %}
+                <th>No item in cart</th>
+                {%endif%}
               </tr>
             </thead>
             <tbody>

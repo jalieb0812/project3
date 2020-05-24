@@ -15,7 +15,7 @@ import datetime
 
 # Create your views here.
 
-def my_profile(request):
+def profile(request):
 
     my_user_profile = Profile.objects.filter(user=request.user).first()
     my_orders = Order.objects.filter(is_ordered=True, owner=my_user_profile)
@@ -23,7 +23,7 @@ def my_profile(request):
 
     context = { 'my_orders': my_orders}
 
-    return render(request, "profile.html", context)
+    return render(request, "orders/profile.html", context)
 
 #@login_required(login_url='login')
 def index(request):
@@ -190,15 +190,15 @@ def checkout(request, **kwargs):
 
 def process_payment(request, order_id):
     # process payment; just using this as a way to pass in the order_id to checkout
-    return redirect (reverse('update_records',
+    return redirect (reverse('orders:updaterecords',
                         kwargs= {
                             'order_id': order_id,
                         })
                         )
 
-def update_transaction_records(request, order_id):
+def updaterecords(request, order_id):
     # get the order being processed
-    order_to_purchase = Order.objects.filert(pk=order_id).first()
+    order_to_purchase = Order.objects.filter(pk=order_id).first()
 
     # update the placed order
     order_to_purchase.is_ordered=True
@@ -239,16 +239,25 @@ def update_transaction_records(request, order_id):
     #messages.info(request, " Order complete! Thank you!")
 
     # redirects to users profiel so they can see the order
-    return redirect(reverse('my_profile'))
+    return redirect(reverse('orders:success'))
 
+
+def get_user_ordered_items(request):
+    # get order for the correct user
+    user_profile = get_object_or_404(Profile, user=request.user)
+    order = Order.objects.filter(owner=user_profile, is_ordered=True)
+    if order.exists():
+        # get the only order in the list of filtered orders
+        return order.last()
+    return 0
 
 # not sure i need this view.
 def success(request, **kwargs):
     # a view signifying the transcation was successful
-    existing_order = get_user_pending_order(request)
+    finished_order = get_user_ordered_items(request)
 
     context = {
-        'order': existing_order,
+        'order': finished_order,
     }
     return render(request, 'orders/purchase_success.html', context)
 
