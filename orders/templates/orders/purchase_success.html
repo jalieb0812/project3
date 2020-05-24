@@ -1,6 +1,29 @@
-{% extends 'base.html' %}
+{% extends 'orders/base.html' %}
 
-{% block content %}
+{% block body %}
     <h1>Thank you for your purchase!</h1>
-    <a href="{% url 'products:product-list' %}">Head back home</a>
-{% endblock content %}
+    <div class="col-md-8 col-xs-12">
+      <table class="table">
+        <tr>
+          <td><h4>Order Summary</h4></td>
+        </tr>
+        <tr>
+          <td>
+            {% for item in order.get_cart_ordered_items %}
+              <tr>
+                <td>{{ item }}</td>
+                <td>${{ item.menu_item.price }}</td>
+              </tr>
+            {% endfor %}
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Order Total</strong> </td>
+          <td> <strong>${{ order.get_cart_total }}</strong></td>
+        </tr>
+      </table>
+      <a <button  href="{% url 'orders:index' %}" class="pull-right btn btn-primary">Menu</button> </a>
+
+    </div>
+
+{% endblock %}

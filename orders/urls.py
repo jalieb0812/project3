@@ -16,10 +16,11 @@ urlpatterns = [
 
     # item_id sent over by object_id from index
     #path('cart/add/<int:item_id>', views.add_item, name='add_item'),
-    path('add-to-cart/<int:ordered_item_id>', views.add_to_cart, name="add_to_cart"),
+    path('add-to-cart/<int:item_id>', views.add_to_cart, name="add_to_cart"),
 
-    path(r'^order-summary/$', views.order_details, name="order_summary"),
-    path(r'^success/$', views.success, name='purchase_success'),
+    path("ordersummary", views.order_details, name="ordersummary"),
+    path(r'^ordersummary/$', views.order_details, name="ordersummary"),
+    path(r'^success/$', views.success, name='success'),
     path(r'^item/delete/(?P<item_id>[-\w]+)/$', views.delete_from_cart, name='delete_item'),
     path(r'^checkout/$', views.checkout, name='checkout'),
     #below payment route not implented

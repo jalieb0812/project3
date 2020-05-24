@@ -229,7 +229,7 @@ class OrderItem(models.Model):
     date_ordered = models.DateTimeField(null=True)
 
     def __str__(self):
-        return f"{self.menu_item} - {self.date_added} - {self.date_ordered}"
+        return f"{self.menu_item} - {self.date_added} - status:{self.is_ordered} - {self.date_ordered}"
 
 
 
@@ -250,7 +250,7 @@ class Order(models.Model):
 
         #sum of total price of all ordered_items
     def get_cart_total(self):
-        return sum([ordered_item.menu_item.price for item in self.order_items.all()])
+        return sum([item.menu_item.price for item in self.ordered_items.all()])
 
     def __str__(self):
         return f"{self.owner} - {self.ordered_items} - {self.date_ordered}"

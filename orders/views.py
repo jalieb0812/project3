@@ -8,7 +8,7 @@ from django.urls import reverse
 
 #from accounts.models import Profile
 
-from orders.models import (Pizza, Topping, Menu_Item, Pasta, Profile,
+from .models import (Pizza, Topping, Menu_Item, Pasta, Profile,
 Subs, Salad, Dinner_Platter, Extras, Order, OrderItem, Transaction, User)
 
 import datetime
@@ -19,6 +19,7 @@ def my_profile(request):
 
     my_user_profile = Profile.objects.filter(user=request.user).first()
     my_orders = Order.objects.filter(is_ordered=True, owner=my_user_profile)
+
 
     context = { 'my_orders': my_orders}
 
@@ -117,7 +118,7 @@ def add_to_cart(request, **kwargs):
     # get the user profile
     user_profile = get_object_or_404(Profile, user=request.user)
     # filter products by id
-    menu_item = Menu_Item.objects.filter(id=kwargs.get('ordered_item_id', "")).first() #item id sent from the url
+    menu_item = Menu_Item.objects.filter(id=kwargs.get('item_id', "")).first() #item id sent from the url
 
     """
 
@@ -133,7 +134,7 @@ def add_to_cart(request, **kwargs):
     user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
     user_order.ordered_items.add(order_item)
 
-    print(f"the are the current order products: {current_order_products}")
+    #print(f"the are the current order products: {current_order_products}")
 
 
     if status:
@@ -153,8 +154,8 @@ def delete_from_cart(request, item_id):
     item_to_delete = OrderItem.objects.filter(pk=item_id)
     if item_to_delete.exists():
         item_to_delete[0].delete()
-        messages.info(request, "Item has been deleted")
-    return redirect(reverse('orders:order_summary'))
+        #messages.info(request, "Item has been deleted")
+    return redirect(reverse('orders:ordersummary'))
 
 
 def get_user_pending_order(request):
@@ -167,11 +168,15 @@ def get_user_pending_order(request):
     return 0
 
 def order_details(request, **kwargs):
+    #user_profile = get_object_or_404(Profile, user=request.user)
+    #current_order = Order.objects.filter (owner=user_profile, is_ordered=False)
+    #orders = current_order[0]
     existing_order = get_user_pending_order(request)
     context = {
-        'order': existing_order
+        'order': existing_order,
+        #'orders': orders
     }
-    return render(request, 'orders/order_summary.html', context)
+    return render(request, 'orders/ordersummary.html', context)
 
 
 def checkout(request, **kwargs):
@@ -185,7 +190,7 @@ def checkout(request, **kwargs):
 
 def process_payment(request, order_id):
     # process payment; just using this as a way to pass in the order_id to checkout
-    return redirect (reverse('orders: update_records',
+    return redirect (reverse('update_records',
                         kwargs= {
                             'order_id': order_id,
                         })
@@ -234,13 +239,18 @@ def update_transaction_records(request, order_id):
     messages.info(request, " Order complete! Thank you!")
 
     # redirects to users profiel so they can see the order
-    return redirect(reverse('accounts:my_profile'))
+    return redirect(reverse('my_profile'))
 
 
 # not sure i need this view.
 def success(request, **kwargs):
     # a view signifying the transcation was successful
-    return render(request, 'shopping_cart/purchase_success.html', {})
+    existing_order = get_user_pending_order(request)
+
+    context = {
+        'order': existing_order,
+    }
+    return render(request, 'orders/purchase_success.html', context)
 
 
 

@@ -1,9 +1,9 @@
+{% extends "orders/base.html" %}
+
+{% block title %} check out  {% endblock %}
+{% block body %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Checkout</title>
+
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/checkout.css' %}">
     <style>
@@ -19,10 +19,9 @@
 
       }
     </style>
-</head>
 
 <body>
-    {% include 'messages.html' %}
+
     <div class="container">
     <section>
       <div class="row" id="tablerow">
@@ -53,7 +52,7 @@
           </tr>
           <tr>
             <td>
-              {% for item in order.get_cart_items %}
+              {% for item in order.get_cart_ordered_items %}
                 <tr>
                   <td>{{ item }}</td>
                   <td>${{ item.menu_item.price }}</td>
@@ -66,11 +65,12 @@
             <td> <strong>${{ order.get_cart_total }}</strong></td>
           </tr>
         </table>
-        <button onclick="toggleDisplay();" class="btn btn-warning" style="width: 100%;">Checkout with a credit card</button>
+
+        <a <button  href="{% url 'orders:success' %}" class="pull-right btn btn-primary">Checkout</button> </a>
       </div>
      </div>
     </section>
-
+{% endblock %}
 
 <!-- <div id="collapseStripe" class="wrapper">
   <script src="https://js.stripe.com/v3/"></script>

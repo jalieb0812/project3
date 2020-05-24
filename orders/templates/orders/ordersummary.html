@@ -1,7 +1,13 @@
-{% extends "base.html" %}
+{% extends "orders/base.html" %}
 
-{% block content %}
-
+{% block title %} Order Summary {% endblock %}
+{% block body %}
+{% load static %}
+<script>
+function confirm_delete(){
+  alert("Do you want to remove this item from cart?");
+}
+</script>
  <section>
    <div class="row">
     <table class="table table-hover table-bordered text-center">
@@ -10,11 +16,11 @@
         <th>Item</th>
         <th>Price</th>
       </tr>
-      {% for item in order.get_cart_items %}
+      {% for item in order.get_cart_ordered_items %}
         <tr>
           <td>{{ forloop.counter }}</td>
           <td>
-            {{ orderd_item.menu_item.name }}
+            {{ item.menu_item.name }}
             <span class="pull-right">
               <a href="{% url 'orders:delete_item' item.id %}"
               data-balloon="remove this item from cart" class="text-danger"
@@ -23,7 +29,9 @@
               </a>
             </span>
           </td>
-          <td>{{ ordered_item.menu_item.price }}</td>
+          <td>{{ item.menu_item.price }}</td>
+          <td><a href="{% url 'orders:delete_item' item.id %}" class="btn btn-warning
+            onclick="confirm_delete()">Delete from Cart</a></td>
         </tr>
       {% empty %}
         <tr>
@@ -48,7 +56,7 @@
           </a>
         </td>
         <td colspan=2>
-          {% if order.get_cart_items %}
+          {% if order.get_cart_ordered_items %}
             <a href="{% url 'orders:checkout' %}" class="pull-right btn btn-primary">Proceed To Checkout</a>
           {% endif %}
         </td>
@@ -58,12 +66,3 @@
    </div>
  </section>
 {% endblock %}
-
-{% block scripts %}
-  {{ block.super }}
-  <script>
-  function confirm_delete(){
-    return confirm("Do you want to remove this item from cart?");
-  }
-  </script>
-{% endblock scripts %}
