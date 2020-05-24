@@ -105,6 +105,18 @@
                 <td>{{item.name}}</td>
                 <td>{{item.sizes}}</td>
                 <td>{{item.price}}</td>
+
+
+              {% if item.category == "Pizza" %}
+
+              {% if item in current_order_products %}
+              <td><a href="{% url 'orders:ordersummary' %}" class="btn btn-warning">Go to Cart</a></td>
+              {% else %}
+             <td><a href="{% url 'orders:customize_order' item.id %}" class="btn btn-warning">Add to Cart</a></td>
+              {% endif %}
+
+
+              {%endif%}
                 {% if item in current_order_products %}
                 <td><a href="{% url 'orders:ordersummary' %}" class="btn btn-warning">Go to Cart</a></td>
                 {% else %}

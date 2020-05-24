@@ -140,7 +140,7 @@ def add_to_cart(request, **kwargs):
     if status:
     #not sure i care about generating a reference code. in extras.py
         # generate a reference code
-    #    user_order.ref_code = generate_order_id()
+        user_order.ref_code = generate_order_id()
         user_order.save()
 
     # show confirmation message and redirect back to the same page
@@ -156,6 +156,41 @@ def delete_from_cart(request, item_id):
         item_to_delete[0].delete()
         #messages.info(request, "Item has been deleted")
     return redirect(reverse('orders:ordersummary'))
+
+def customize_order(request, **kwargs):
+
+
+    toppings = Menu_Item.objects.filter(category__contains="Topping")
+
+    extras = Menu_Item.objects.filter(category__contains="Extra")
+
+    pizza_categories = Menu_Item.objects.filter(category__contains="Pizza")
+
+    sub_categories = Menu_Item.objects.filter(category__contains="Subs")
+
+
+    menu_items = Menu_Item.objects.all()
+
+
+    context ={
+
+
+
+            "user": request.user,
+
+
+
+            "menu_item": menu_items,
+            "pizza_categories": pizza_categories,
+            "toppings": toppings,
+            "extras": extras,
+            "sub_categories": sub_categories,
+
+
+        }
+
+    return render(request, "orders/customize_order.html", context)
+
 
 
 def get_user_pending_order(request):
