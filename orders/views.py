@@ -133,7 +133,7 @@ def add_to_cart(request, **kwargs):
     user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
     user_order.ordered_items.add(order_item)
 
-    print(f"the are the current order products: {current_order_products}"")
+    print(f"the are the current order products: {current_order_products}")
 
 
     if status:

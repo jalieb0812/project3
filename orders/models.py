@@ -253,7 +253,8 @@ class Order(models.Model):
         return sum([ordered_item.menu_item.price for item in self.order_items.all()])
 
     def __str__(self):
-        return '{0} - {1}'.format(self.owner, self.ref_code)
+        return f"{self.owner} - {self.ordered_items} - {self.date_ordered}"
+        #return '{0} - {1}'.format(self.owner, self.ref_code)
 
 
 class Transaction(models.Model):
