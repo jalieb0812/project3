@@ -20,19 +20,19 @@
 
   <ul class="navbar-nav">
     <li class="nav-item">
-          <a class="nav-link active" href="#pizza">Pizza</a>
+          <a class="nav-link active" href="#Pizza">Pizza</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#pastas">Pasta</a>
+          <a class="nav-link" href="#Pasta">Pasta</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#salads">Salad</a>
+          <a class="nav-link" href="#Salad">Salad</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#subs">Subs</a>
+          <a class="nav-link" href="#Subs">Subs</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#dinner_platters">Dinner Platters</a>
+          <a class="nav-link" href="#Dinner_Platter">Dinner Platters</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Menu</a>
@@ -57,203 +57,64 @@
 <div class="my-menu-flex-container">
 
 
-      <div class="flex-row">
 
 
-<div class="col-sm">
+      <div class="col-sm">
 
 
 
+          <h2 >Menu Items</h2>
 
-    <h2 id="pizza" >Pizzas</h2>
 
+          <table  class="table  table-bordered table-hover">
+            <thead>
 
-    <table  class="table  table-bordered table-hover">
-      <thead>
 
+              <tr>
+                <th scope="col">Category</th>
+                <th scope="col">Type</th>
+                <th scope="col">Size</th>
+                <th scope="col">Price</th>
+              </tr>
+            </thead>
+            <tbody>
 
-        <tr>
-          <th scope="col">Category</th>
-          <th scope="col">Type</th>
-          <th scope="col">Size</th>
-          <th scope="col">Price</th>
-        </tr>
-      </thead>
-      <tbody>
 
-        {% for item in pizza_categories %}
 
-        <tr>
-          <th scope="row">{{item.category}}</th>
+              {% for item in menu_item %}
 
-          <td>{{item.name}}</td>
-          <td>{{item.sizes}}</td>
-          <td>{{item.price}}</td>
-          {% if item in current_order_products %}
-          <td><a href="{% url 'orders:ordersummary' %}" class="btn btn-warning">Go to Cart</a></td>
-          {% else %}
-         <td><a href="{% url 'orders:add_to_cart' item.id %}" class="btn btn-warning">Add to Cart</a></td>
-          {% endif %}
+              {% ifchanged item.category %}
 
 
-        </tr>
-        {% endfor %}
+              <tr id="{{item.category}}">
 
-      </tbody>
+                <th scope="row" colspan="5"  >   {{ item.category }}</th>
 
-    </table>
 
-    <br>
-  </div>
+             </tr> {% endifchanged %}
 
-<div class="col-sm">
+              <tr>
+                <th scope="row">{{item.category}}</th>
 
+                <td>{{item.name}}</td>
+                <td>{{item.sizes}}</td>
+                <td>{{item.price}}</td>
+                {% if item in current_order_products %}
+                <td><a href="{% url 'orders:ordersummary' %}" class="btn btn-warning">Go to Cart</a></td>
+                {% else %}
+               <td><a href="{% url 'orders:add_to_cart' item.id %}" class="btn btn-warning">Add to Cart</a></td>
+                {% endif %}
 
-    <h4 id="pastas">Pastas</h4>
 
+              </tr>
+              {% endfor %}
 
-    <table id="pasta_menu" class="table  table-bordered table-hover ">
-      <thead>
+            </tbody>
 
+          </table>
 
-        <tr>
-          <th scope="col">Category</th>
-          <th scope="col">Type</th>
-          <th scope="col">Size</th>
-          <th scope="col">Price</th>
-        </tr>
-      </thead>
-      <tbody>
-
-        {% for item in pasta_categories %}
-
-        <tr>
-          <th scope="row">{{item.category}}</th>
-
-          <td>{{item.name}}</td>
-          <td>{{item.sizes}}</td>
-          <td>{{item.price}}</td>
-
-        </tr>
-        {% endfor %}
-
-      </tbody>
-
-    </table>
-
-    <br>
-
-    <h4 id="salads">Salads</h4>
-
-
-    <table id="salad_menu" class="table  table-bordered table-hover ">
-      <thead>
-
-
-        <tr>
-          <th scope="col">Category</th>
-          <th scope="col">Type</th>
-          <th scope="col">Size</th>
-          <th scope="col">Price</th>
-        </tr>
-      </thead>
-      <tbody>
-
-        {% for item in salad_categories %}
-
-        <tr>
-          <th scope="row">{{item.category}}</th>
-
-          <td>{{item.name}}</td>
-          <td>{{item.sizes}}</td>
-          <td>{{item.price}}</td>
-
-        </tr>
-        {% endfor %}
-
-      </tbody>
-
-    </table>
-
-    <br>
-</div>
-
-
-<div class="col-sm">
-
-
-    <h4 id="subs">Subs</h4>
-
-
-    <table id="sub_menu" class="table  table-bordered table-hover ">
-      <thead>
-
-
-        <tr>
-          <th scope="col">Category</th>
-          <th scope="col">Type</th>
-          <th scope="col">Size</th>
-          <th scope="col">Price</th>
-        </tr>
-      </thead>
-      <tbody>
-
-        {% for item in sub_categories %}
-
-        <tr>
-          <th scope="row">{{item.category}}</th>
-
-          <td>{{item.name}}</td>
-          <td>{{item.sizes}}</td>
-          <td>{{item.price}}</td>
-
-        </tr>
-        {% endfor %}
-
-      </tbody>
-
-    </table>
-
-    <br>
-
-    <h4 id="dinner_platters">Dinner Platters</h4>
-
-
-    <table id="dinner_platters_menu" class="table  table-bordered table-hover ">
-      <thead>
-
-
-        <tr>
-          <th scope="col">Category</th>
-          <th scope="col">Type</th>
-          <th scope="col">Size</th>
-          <th scope="col">Price</th>
-        </tr>
-      </thead>
-      <tbody>
-
-        {% for item in dinner_platter_categories %}
-
-        <tr>
-          <th scope="row">{{item.category}}</th>
-
-          <td>{{item.name}}</td>
-          <td>{{item.sizes}}</td>
-          <td>{{item.price}}</td>
-
-        </tr>
-        {% endfor %}
-
-      </tbody>
-
-    </table>
-
-    <br>
-</div>
-
-
-      </div>
-
+          <br>
+        </div>
 
 {% endblock %}
 

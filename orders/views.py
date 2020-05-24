@@ -236,7 +236,7 @@ def update_transaction_records(request, order_id):
 
     # send an email to the customer
     # look at tutorial on how to send emails with sendgrid
-    messages.info(request, " Order complete! Thank you!")
+    #messages.info(request, " Order complete! Thank you!")
 
     # redirects to users profiel so they can see the order
     return redirect(reverse('my_profile'))

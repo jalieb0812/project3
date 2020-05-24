@@ -59,7 +59,7 @@ class Menu_Item(models.Model):
 
     name = models.CharField(max_length=128, help_text='Enter name of the menu item')
 
-    price = price =  models.DecimalField(max_digits=4, null=True, blank=True, decimal_places=2)
+    price = price =  models.DecimalField(max_digits=4, null=True, blank=True, decimal_places=2, default=0.00)
 
     sizes = models.CharField(max_length=4, null=True, blank=True, choices=SIZE_CATEGORIES,
                                 help_text='Enter the allowable sizes of the menu item')
