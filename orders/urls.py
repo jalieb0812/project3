@@ -9,7 +9,7 @@ app_name = 'orders'
 #list of urls supported by this app (orders)
 urlpatterns = [
     path("", views.index, name="index"),
-    path("register", views.register, name="register"),
+    path("register", views.register_view, name="register"),
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
 
@@ -28,7 +28,8 @@ urlpatterns = [
     #below payment route not implented
     path(r'^payment/(?P<order_id> [-\w]+)/$', views.process_payment, name='process_payment' ),
     path('updaterecords/<int:order_id>', views.updaterecords, name='updaterecords'), # redirects to the update
-    path('profile', views.profile, name='profile')
+    path('profile', views.profile, name='profile'),
+    path('allorders', views.allorders, name='allorders')
 
     #probably change url to path in this paths
 ]

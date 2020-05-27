@@ -4,12 +4,17 @@
 
 <table class="table table-hover table-bordered text-center">
       <tr class="text-center">
+        <th>Customer</th>
         <th>Date Ordered</th>
+
         <th>Items</th>
         <th>Total</th>
+
       </tr>
-      {% for order in my_orders %}
+      {% for order in all_orders.all %}
         <tr>
+
+          <td>{{order.owner}}</td>
           <td>{{ order.date_ordered }}</td>
 
         	{% for item in order.ordered_items.all %}
@@ -23,7 +28,7 @@
           {% endif %}
 
       		{% endfor %}
-      	 
+
           <td>$ Total Price: {{ order.get_cart_total }}</td>
 
         </tr>

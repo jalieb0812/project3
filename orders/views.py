@@ -10,7 +10,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 #from accounts.models import Profile
 
 from .models import (Pizza, Topping, Menu_Item, Pasta, Profile,
-Subs, Salad, Dinner_Platter, Extras, Order, OrderItem, Transaction, User)
+Subs, Salad, Dinner_Platter, Extras, Order, OrderItem, Transaction, User, )
 
 import datetime
 
@@ -26,6 +26,15 @@ def profile(request):
 
     return render(request, "orders/profile.html", context)
 
+def allorders(request):
+
+    profiles = Profile.objects.all()
+    all_orders = Order.objects.filter(is_ordered=True)
+
+
+    context = { 'all_orders': all_orders}
+
+    return render(request, "orders/allorders.html", context)
 #@login_required(login_url='login')
 def index(request):
 
@@ -97,10 +106,10 @@ def add_to_cart(request, **kwargs):
     #menu_item = get_object_or_404(Menu_Item, pk=self.kwargs['pk'])
     menu_item = Menu_Item.objects.filter(id=kwargs.get('item_id', "")).first() #item id sent from the url
 
-    quantity = int(request.POST['quantity'])
-    print(f"quantity:{quantity} \n")
+    # quantity = int(request.POST['quantity'])
+    # print(f"quantity:{quantity} \n")
     # create orderItem of the selected menu_item
-    order_item = OrderItem.objects.create(menu_item=menu_item, quantity=quantity)
+    order_item = OrderItem.objects.create(menu_item=menu_item)
 
     # create order associated with the user
     user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
@@ -533,10 +542,10 @@ def success(request, **kwargs):
 #     # a view signifying the transcation was successful
 #     return render(request, 'shopping_cart/purchase_success.html', {})
 
-def register(request):
+def register_view(request):
 
     if request.method == 'GET':
-        return render(request, 'orders/register.html', {"message": None})
+        return render(request, 'orders/register.html')
 
     user = request.POST['username']
     first_name = request.POST['first_name']
@@ -563,9 +572,9 @@ def register(request):
     if len(password) < 4 or len(password_confirmation) < 4 :
         return render(request, 'orders/register.html', {"message": "Password must be at least 4 charachters long."})
 
-    if User.objects.filter(email=email):
-        return render(request, 'orders/register.html', {"message": "Hmmm. Another user already has that email. \
-        Please enter a different email address."})
+#    if User.objects.filter(email=email):
+#        return render(request, 'orders/register.html', {"message": "Hmmm. Another user already has that email. \
+#        Please enter a different email address."})
 
     try:
         User.objects.create_user(user, email, password)
@@ -573,10 +582,10 @@ def register(request):
         return render(request, 'orders/register.html', {"message": "Registration failed."})
 
     if first_name:
-        user.first_name = first_name
+        User.first_name = first_name
     if last_name:
-        user.last_name = last_name
-    return HttpResponseRedirect(reverse('login'))
+        User.last_name = last_name
+    return HttpResponseRedirect(reverse('orders:login'))
 
 
 
