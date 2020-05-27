@@ -28,7 +28,6 @@ User = get_user_model()
 
 
 
-
 class Menu_Item(models.Model):
 
     MENU_CATEGORIES = (
@@ -59,37 +58,24 @@ class Menu_Item(models.Model):
 
     name = models.CharField(max_length=128, help_text='Enter name of the menu item')
 
-    price = price =  models.DecimalField(max_digits=4, null=True, blank=True, decimal_places=2, default=0.00)
+    price =  models.DecimalField(max_digits=4, null=True, blank=True, decimal_places=2, default=0.00)
 
     sizes = models.CharField(max_length=4, null=True, blank=True, choices=SIZE_CATEGORIES,
                                 help_text='Enter the allowable sizes of the menu item')
 
-
-    def __str__(self):
-        return f" Category:{self.category} - Name:{self.name} - Sizes:{self.sizes} - Price: {self.price}"
-
-
-class Items(models.Model):
-
-    category = models.CharField(max_length=36, null=True, blank=True, help_text='Enter the category of the menu item')
-
-    name = models.CharField(max_length=128, help_text='Enter name of the menu item')
-
-    price = price =  models.DecimalField(max_digits=4, null=True, blank=True, decimal_places=2)
-
-    sizes = models.CharField(max_length=4, null=True, blank=True,  help_text='Enter the allowable sizes of the menu item')
+    toppings = models.CharField( max_length=400, blank=True, null=True, help_text='Enter toppings')
+    num_toppings = models.CharField(max_length=10, blank=True, null=True)
 
 
     def __str__(self):
-        return f" Category:{self.category} - Name:{self.name} - Sizes:{self.sizes} - Price: {self.price}"
-
-
-
+        return f" Category:{self.category} - Name:{self.name} - Sizes:{self.sizes} - Price: {self.price} \
+        -numtoppings {self.num_toppings} - toppings {self.toppings}"
 
 
 
 class Topping(models.Model):
     topping_name = models.CharField(max_length=36)
+    price = models.DecimalField(max_digits=4, null=True, blank=True, decimal_places=2, default=0.00)
 
     def __str__(self):
         return f"{self.topping_name}"
@@ -100,6 +86,39 @@ class Extras(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.price}"
+
+"""
+class Pizza_Item(Menu_Item):
+
+    toppings = models.ManyToManyField(Topping, blank=True, help_text='Enter toppings')
+    num_toppings = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return f" Category:{self.category} - Name:{self.name} - Sizes:{self.sizes} \
+         - Price: {self.price} -numtoppings {self.num_toppings} - toppings {self.toppings}"
+"""
+
+class Items(models.Model):
+
+    category = models.CharField(max_length=36, null=True, blank=True, help_text='Enter the category of the menu item')
+
+    name = models.CharField(max_length=128, help_text='Enter name of the menu item')
+
+    price = price =  models.DecimalField(max_digits=4, null=True, blank=True, decimal_places=2)
+
+    sizes = models.IntegerField( null=True, blank=True,  help_text='Enter the allowable sizes of the menu item')
+
+
+    def __str__(self):
+        return f" Category:{self.category} - Name:{self.name} - Sizes:{self.sizes} - Price: {self.price}"
+
+
+
+
+
+
+
 
 
 class Pizza(models.Model):
@@ -117,7 +136,7 @@ class Pizza(models.Model):
     size = models.CharField(max_length=1, choices=SIZE_CATEGORIES,
                             help_text='Enter pizza size')
 
-    price =  models.DecimalField(max_digits=4,decimal_places=2)
+    price =  models.DecimalField(max_digits=4,decimal_places=2, default=0.00)
     #topings = model.
 
     num_toppings = models.IntegerField(default=0)
@@ -227,9 +246,12 @@ class OrderItem(models.Model):
     is_ordered = models.BooleanField(default=False)
     date_added = models.DateTimeField(auto_now=True)
     date_ordered = models.DateTimeField(null=True)
+    is_topping =models.BooleanField(default=False)
 
+    ptoppings = models.CharField(max_length=400,  blank=True, null=True)
     def __str__(self):
-        return f"{self.menu_item} - {self.date_added} - status:{self.is_ordered} - {self.date_ordered}"
+        return f"{self.menu_item} - {self.date_added} - status:{self.is_ordered} \
+         - {self.date_ordered}- {self.is_topping}"
 
 
 
@@ -246,14 +268,21 @@ class Order(models.Model):
 
     #get all the orders ordered_items
     def get_cart_ordered_items(self):
-        return self.ordered_items.all()
+        return self.ordered_items.exclude(is_topping=True)
 
+    def get_cart_ordered_items_toppings(self):
+        return self.ordered_items.all()
         #sum of total price of all ordered_items
+
+
     def get_cart_total(self):
-        return sum([item.menu_item.price for item in self.ordered_items.all()])
+
+
+        return sum([item.menu_item.price for item in self.ordered_items.exclude(is_topping=True)])
+
 
     def __str__(self):
-        return f"{self.owner} - {self.ordered_items} - {self.date_ordered}"
+        return f"{self.owner} - {self.ordered_items.all()} - {self.date_ordered}"
         #return '{0} - {1}'.format(self.owner, self.ref_code)
 
 

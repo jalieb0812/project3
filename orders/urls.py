@@ -17,7 +17,7 @@ urlpatterns = [
     # item_id sent over by object_id from index
     #path('cart/add/<int:item_id>', views.add_item, name='add_item'),
     path('add-to-cart/<int:item_id>', views.add_to_cart, name="add_to_cart"),
-    path('customize_order/<int:item_id>', views.customize_order, name="customize_order"),
+    path('customize_order/str<food>', views.customize_order, name="customize_order"),
 
     path("ordersummary", views.order_details, name="ordersummary"),
     path(r'^ordersummary/$', views.order_details, name="ordersummary"),

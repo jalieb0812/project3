@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.utils.datastructures import MultiValueDictKeyError
 
 #from accounts.models import Profile
 
@@ -87,33 +88,7 @@ def index(request):
     }
     return render(request, "orders/index.html", context)
 
-# @login_required()
-# def add_to_cart(request, **kwargs):
-#     # get the user profile
-#     user_profile = get_object_or_404(Profile, user=request.user)
-#     # filter products by id
-#     product = Product.objects.filter(id=kwargs.get('item_id', "")).first()
-#     # check if the user already owns this product
-#     if product in request.user.profile.ebooks.all():
-#         messages.info(request, 'You already own this ebook')
-#         return redirect(reverse('products:product-list'))
-#     # create orderItem of the selected product
-#     order_item, status = OrderItem.objects.get_or_create(product=product)
-#     # create order associated with the user
-#     user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
-#     user_order.items.add(order_item)
-#     if status:
-#         # generate a reference code
-#         user_order.ref_code = generate_order_id()
-#         user_order.save()
-#
-#     # show confirmation message and redirect back to the same page
-#     messages.info(request, "item added to cart")
-#     return redirect(reverse('products:product-list'))
-#
-#
 
-#@login_required()
 def add_to_cart(request, **kwargs):
     # get the user profile
     user_profile = get_object_or_404(Profile, user=request.user)
@@ -130,8 +105,10 @@ def add_to_cart(request, **kwargs):
     """
     # create orderItem of the selected menu_item
     order_item, status = OrderItem.objects.get_or_create(menu_item=menu_item)
+
     # create order associated with the user
     user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
+
     user_order.ordered_items.add(order_item)
 
     #print(f"the are the current order products: {current_order_products}")
@@ -140,7 +117,7 @@ def add_to_cart(request, **kwargs):
     if status:
     #not sure i care about generating a reference code. in extras.py
         # generate a reference code
-        user_order.ref_code = generate_order_id()
+        #user_order.ref_code = generate_order_id()
         user_order.save()
 
     # show confirmation message and redirect back to the same page
@@ -157,48 +134,157 @@ def delete_from_cart(request, item_id):
         #messages.info(request, "Item has been deleted")
     return redirect(reverse('orders:ordersummary'))
 
-def customize_order(request, **kwargs):
+def customize_order(request, food, **kwargs):
 
+    if request.method == "GET":
 
-    toppings = Menu_Item.objects.filter(category__contains="Topping")
+        menu_items = Menu_Item.objects.all()
+        filtered_orders = Order.objects.filter(owner=request.user.profile, is_ordered=False)
+        current_order_products = []
 
-    extras = Menu_Item.objects.filter(category__contains="Extra")
-
-    pizza_categories = Menu_Item.objects.filter(category__contains="Pizza")
-
-    sub_categories = Menu_Item.objects.filter(category__contains="Subs")
-
-
-    menu_items = Menu_Item.objects.all()
-
-
-    context ={
+        if filtered_orders.exists():
+            user_order = filtered_orders[0]
+            user_order_items = user_order.ordered_items.all() # warning 2 menu_items variables
+            current_order_products = [menu_item.menu_item for menu_item in user_order_items]
 
 
 
-            "user": request.user,
+        toppings = Menu_Item.objects.filter(category__contains="Topping")
+
+        extras = Menu_Item.objects.filter(category__contains="Extra")
+
+        pizza_categories = Menu_Item.objects.filter(category__contains="Pizza")
+
+        sub_categories = Menu_Item.objects.filter(category__contains="Subs")
+
+
+        menu_items = Menu_Item.objects.all()
+
+        ordered_item = Menu_Item.objects.filter(name=food).first()
+
+
+        context ={
+
+                "ordered_item": ordered_item,
+                #"order_item_id": int(order_item.pk),
+
+                "user": request.user,
+
+                'current_order_products': current_order_products,
+
+                "menu_item": menu_items,
+                "pizza_categories": pizza_categories,
+                "toppings": toppings,
+                "extras": extras,
+                "sub_categories": sub_categories,
+
+
+            }
+        return render(request, "orders/customize_order.html", context)
 
 
 
-            "menu_item": menu_items,
-            "pizza_categories": pizza_categories,
-            "toppings": toppings,
-            "extras": extras,
-            "sub_categories": sub_categories,
+    # get the user profile
+    user_profile = get_object_or_404(Profile, user=request.user)
+    # filter products by id
+
+    menu_item = Menu_Item.objects.filter(name=food).first()
+    print (f"this is menu item in get {menu_item}")
+
+    toppings = []
+
+    topping1 = request.POST["topping1"]
+    toppings.append(topping1)
+
+    try:
+        topping2 = request.POST["topping2"]
+        toppings.append(topping2)
+    except MultiValueDictKeyError:
+        toppings2 = False
+
+    try:
+        topping3 = request.POST["topping3"]
+        toppings.append(topping3)
+
+    except MultiValueDictKeyError:
+        topping3 = False
 
 
-        }
-
-    return render(request, "orders/customize_order.html", context)
 
 
+
+    print(f"these are the toppings: {toppings}")
+
+
+
+
+    #menu_item = Menu_Item.objects.f(pk=kwargs.get('item_id', "")).first() #item id sent from the url
+
+
+
+    # create orderItem of the selected menu_item
+    order_item, status = OrderItem.objects.get_or_create(menu_item=menu_item)
+
+    toppingsss, status = OrderItem.objects.get_or_create(ptoppings=toppings, is_topping=True)
+
+
+    #total = OrderItem.objects.all().aggregate(sum('price')).values()
+
+    #print (f"{total}")
+
+    print (f"this is order_item item in get {order_item} \n")
+
+    print (f"this is topings order item in get {toppings} \n")
+
+
+    #order_item.toppings = topping
+    print (f"this is order item item with toppings: {order_item}")
+
+
+    #user_orderitem, status = OrderItem.objects.get_or_create( is_ordered=False)
+
+    #user_orderitem.save()
+    # create order associated with the user
+    user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
+
+    user_order.ordered_items.add(order_item)
+    user_order.ordered_items.add(toppingsss)
+
+
+    #print(f"the are the current order products: {current_order_products}")
+
+
+
+    if status:
+    #not sure i care about generating a reference code. in extras.py
+        # generate a reference code
+        #user_order.ref_code = generate_order_id()
+        user_order.save()
+
+    print (f"this is user order in get {user_order.ordered_items.all()}")
+
+
+
+
+
+        #return render(request, "orders/customize_order.html", context)
+
+    return HttpResponseRedirect(reverse('orders:index'))
+
+
+
+
+    #    if request.method== "POST":
+
+
+        #    toppings = request.form.get()
 
 def get_user_pending_order(request):
     # get order for the correct user
     user_profile = get_object_or_404(Profile, user=request.user)
     order = Order.objects.filter(owner=user_profile, is_ordered=False)
     if order.exists():
-        # get the only order in the list of filtered orders
+        # get the only order in the list of filtered orders with is_ordered = false
         return order[0]
     return 0
 
@@ -207,6 +293,29 @@ def order_details(request, **kwargs):
     #current_order = Order.objects.filter (owner=user_profile, is_ordered=False)
     #orders = current_order[0]
     existing_order = get_user_pending_order(request)
+    user_profile = get_object_or_404(Profile, user=request.user)
+
+    order = Order.objects.filter(owner=user_profile, is_ordered=False)
+    print(f"{order} \n")
+
+
+
+    itemss = Order.objects.filter(ordered_items__menu_item__name__icontains = "Pizza", is_ordered=False)
+    print(f"theser are tehe itttees,{itemss} \n \n")
+
+#    zzz=itemss.filter(ordered_items__menu_item__is_topping=True)
+
+    print(f"theser are zzz,{itemss}")
+    total = 0
+
+
+    # for item in order:
+    #     print(f"{item}")
+    #     if item.menu_item.price != None:
+    #         total += item.menu_item.price
+    # print (f"total")
+
+
     context = {
         'order': existing_order,
         #'orders': orders

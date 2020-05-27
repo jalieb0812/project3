@@ -112,11 +112,12 @@
               {% if item in current_order_products %}
               <td><a href="{% url 'orders:ordersummary' %}" class="btn btn-warning">Go to Cart</a></td>
               {% else %}
-             <td><a href="{% url 'orders:customize_order' item.id %}" class="btn btn-warning">Add to Cart</a></td>
+             <td><a href="{% url 'orders:customize_order' item.name %}" class="btn btn-warning">Add to Cart</a></td>
               {% endif %}
 
 
               {%endif%}
+              
                 {% if item in current_order_products %}
                 <td><a href="{% url 'orders:ordersummary' %}" class="btn btn-warning">Go to Cart</a></td>
                 {% else %}
