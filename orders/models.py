@@ -268,7 +268,8 @@ class Order(models.Model):
 
     #get all the orders ordered_items
     def get_cart_ordered_items(self):
-        return self.ordered_items.exclude(is_topping=True)
+        return self.ordered_items.all()
+        #exclude(is_topping=True)
 
     def get_cart_ordered_items_toppings(self):
         return self.ordered_items.all()
@@ -278,7 +279,8 @@ class Order(models.Model):
     def get_cart_total(self):
 
 
-        return sum([item.menu_item.price for item in self.ordered_items.exclude(is_topping=True)])
+        return sum([item.menu_item.price for item in self.ordered_items.all()])
+        #.exclude(is_topping=True)])
 
 
     def __str__(self):

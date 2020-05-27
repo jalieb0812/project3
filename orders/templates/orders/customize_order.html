@@ -58,12 +58,9 @@
 
    </table>
 
+{% if "Special" not in ordered_item.name %}
 
-
-
-
-    <h1> Choose 1 topping </h1>
-     <form action="{% url 'orders:customize_order' food=ordered_item.name %}"  method="post">
+    <form action="{% url 'orders:customize_order' food=ordered_item.name %}"  method="post">
                {% csrf_token %}
 
 <p>first topping</p>
@@ -78,7 +75,7 @@
 
                  {% endfor %}
 
-{% if ordered_item.num_toppings > 1 %}
+{% if "2" in ordered_item.name or "3" in ordered_item.name %}
 <p>second topping</p>
   {% for topping  in toppings %}
      <fieldset id="topping2">
@@ -86,10 +83,11 @@
        <label for="{{topping.name}}">{{topping.name}}</label><br>
      </fieldset>
 
-           {% endfor %}
-    {% endif %}
+  {% endfor %}
 
-{% if ordered_item.num_toppings > 2 %}
+{% endif %}
+
+{% if "3" in ordered_item.name %}
 <p>third toppings</p>
      {% for topping  in toppings %}
         <fieldset id="topping3">
@@ -101,8 +99,27 @@
   {% endif %}
 
     <button class="btn btn-primary" type="submit">Submit</button>
+
    </form>
 
+  {% endif %}
 
+{% if "Special" in ordered_item.name %}
+
+<form class="" action="{% url 'orders:customize_order' food=ordered_item.name %}" name="special_toppings" method="post">
+       {% csrf_token %}
+
+        {% for topping  in toppings %}
+  <div class="form-check">
+  <input class="form-check-input" type="checkbox" value="{{topping.name}}" id="{{topping.name}}">
+  <label class="form-check-label" for="{{topping.name}}">
+    {{topping.name}}
+  </label>
+</div>
+{% endfor %}
+{% endif %}
+<button class="btn btn-primary" type="submit">Submit</button>
+
+</form>
 
 {%endblock%}

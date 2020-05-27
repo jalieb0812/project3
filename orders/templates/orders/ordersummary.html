@@ -14,25 +14,25 @@ function confirm_delete(){
       <tr class="text-center">
         <th>number</th>
         <th>Item</th>
-        <th>Price</th>
         <th>toppings</th>
+        <th>Price</th>
+
       </tr>
       {% for item in order.get_cart_ordered_items %}
         <tr>
           <td>{{ forloop.counter }}</td>
-          <td>
-            {{ item.menu_item.name }}
-          </td>
+          <td>{{ item.menu_item.name }}</td>
+
+          <td>{{item.ptoppings}}</td>
           <td>{{ item.menu_item.price }}</td>
+              <!-- </tr>
               {% for item in order.get_cart_ordered_items_toppings %}
               <tr>
-                <td>{{item.ptoppings}}</td>
-              </tr>
-                  {% endfor %}
+                  {% endfor %} -->
           <td><a href="{% url 'orders:delete_item' item.id %}" class="btn btn-warning
             onclick="confirm_delete()">Delete from Cart</a></td>
 
-    
+
 
       {% empty %}
         <tr>

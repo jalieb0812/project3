@@ -223,9 +223,9 @@ def customize_order(request, food, **kwargs):
 
 
     # create orderItem of the selected menu_item
-    order_item, status = OrderItem.objects.get_or_create(menu_item=menu_item)
+    order_item, status = OrderItem.objects.get_or_create(menu_item=menu_item, ptoppings=toppings)
 
-    toppingsss, status = OrderItem.objects.get_or_create(ptoppings=toppings, is_topping=True)
+#    toppingsss, status = OrderItem.objects.get_or_create(ptoppings=toppings, is_topping=True)
 
 
     #total = OrderItem.objects.all().aggregate(sum('price')).values()
@@ -248,7 +248,7 @@ def customize_order(request, food, **kwargs):
     user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
 
     user_order.ordered_items.add(order_item)
-    user_order.ordered_items.add(toppingsss)
+    #user_order.ordered_items.add(toppingsss)
 
 
     #print(f"the are the current order products: {current_order_products}")

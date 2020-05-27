@@ -42,7 +42,9 @@
     <a class="nav-link text-light" href="/profile"><h5>Profile</h5></a>
     <a class="nav-link text-light" href="/logout"><h5>Logout</h5></a>
     {% endif %}
-
+    {% if request.user.is_superuser %}
+     <a class="nav-link text-light" href="/admin"><h5>Admin</h5></a>
+     {% endif %}
   </nav>
 
 
