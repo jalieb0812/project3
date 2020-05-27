@@ -193,21 +193,29 @@ def customize_order(request, food, **kwargs):
 
     toppings = []
 
-    topping1 = request.POST["topping1"]
-    toppings.append(topping1)
+    if "Special" in food:
+        special_toppings = request.POST.getlist('special_toppings')
+        print(f"special_toppings:{special_toppings} \n")
+        toppings = special_toppings
+    #    for topping in request.POST[]
+        #toppings.append(request.POST["special_toppings"])
 
-    try:
-        topping2 = request.POST["topping2"]
-        toppings.append(topping2)
-    except MultiValueDictKeyError:
-        toppings2 = False
+    if "Special" not in food and "Pizza" in food:
+        topping1 = request.POST["topping1"]
+        toppings.append(topping1)
 
-    try:
-        topping3 = request.POST["topping3"]
-        toppings.append(topping3)
+        try:
+            topping2 = request.POST["topping2"]
+            toppings.append(topping2)
+        except MultiValueDictKeyError:
+            toppings2 = False
 
-    except MultiValueDictKeyError:
-        topping3 = False
+        try:
+            topping3 = request.POST["topping3"]
+            toppings.append(topping3)
+
+        except MultiValueDictKeyError:
+            topping3 = False
 
 
 
