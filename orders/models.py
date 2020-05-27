@@ -242,16 +242,17 @@ def post_save_profile_create(sender, instance, created, *args, **kwargs):
 post_save.connect(post_save_profile_create, sender=settings.AUTH_USER_MODEL)
 
 class OrderItem(models.Model):
-    menu_item = models.OneToOneField(Menu_Item, on_delete=models.SET_NULL, null=True)
+    menu_item = models.ForeignKey(Menu_Item,on_delete=models.CASCADE, blank=True, null=True)
     is_ordered = models.BooleanField(default=False)
     date_added = models.DateTimeField(auto_now=True)
     date_ordered = models.DateTimeField(null=True)
     is_topping =models.BooleanField(default=False)
+    quantity = models.IntegerField(default=1)
 
     ptoppings = models.CharField(max_length=400,  blank=True, null=True)
     def __str__(self):
         return f"{self.menu_item} - {self.date_added} - status:{self.is_ordered} \
-         - {self.date_ordered}- {self.is_topping}"
+         - {self.date_ordered}- {self.is_topping} - Num ordered:{self.quantity}"
 
 
 

@@ -54,7 +54,14 @@
             <td>
               {% for item in order.get_cart_ordered_items %}
                 <tr>
-                  <td>{{ item }}</td>
+                  {% if item.ptoppings %}
+                  <td>
+                    {{ item.menu_item.name }}
+                    Toppings: {{ item.ptoppings }}
+                  </td>
+                  {% else %}
+                  <td>   {{ item.menu_item.name }}</td>
+                  {% endif %}
                   <td>${{ item.menu_item.price }}</td>
                 </tr>
               {% endfor %}

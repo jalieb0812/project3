@@ -7,12 +7,14 @@
 
 <h2 >Enter Toppings for {{ordered_item.name}}</h2>
 
+<form class="" action="index.html" method="post">
+
 
 <table  class="table  table-bordered table-hover text-center">
   <thead>
 
+   <tr>
 
-    <tr>
       <th scope="col">Category</th>
       <th scope="col">Type</th>
       <th scope="col">Size</th>
@@ -58,6 +60,7 @@
 
    </table>
 
+ </form>
 {% if "Special" not in ordered_item.name %}
 
     <form action="{% url 'orders:customize_order' food=ordered_item.name %}"  method="post">
@@ -68,8 +71,8 @@
                 {% for topping  in toppings %}
 
 
-<fieldset id="topping1">
-  <input type="radio" id="{{topping.name}}" name="topping1" value="{{topping.name}}">
+<fieldset class="topping1">
+  <input type="radio" class="{{topping.name}}" name="topping1" value="{{topping.name}}">
   <label for="{{topping.name}}">{{topping.name}}</label><br>
 </fieldset>
 
@@ -78,8 +81,8 @@
 {% if "2" in ordered_item.name or "3" in ordered_item.name %}
 <p>second topping</p>
   {% for topping  in toppings %}
-     <fieldset id="topping2">
-       <input type="radio" id="{{topping.name}}" name="topping2" value="{{topping.name}}">
+     <fieldset class="topping2">
+       <input type="radio" class="{{topping.name}}" name="topping2" value="{{topping.name}}">
        <label for="{{topping.name}}">{{topping.name}}</label><br>
      </fieldset>
 
@@ -90,8 +93,8 @@
 {% if "3" in ordered_item.name %}
 <p>third toppings</p>
      {% for topping  in toppings %}
-        <fieldset id="topping3">
-          <input type="radio" id="{{topping.name}}" name="topping3" value="{{topping.name}}">
+        <fieldset class="topping3">
+          <input type="radio" class="{{topping.name}}" name="topping3" value="{{topping.name}}">
           <label for="{{topping.name}}">{{topping.name}}</label><br>
         </fieldset>
 

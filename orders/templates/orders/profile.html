@@ -6,17 +6,25 @@
       <tr class="text-center">
         <th>Date Ordered</th>
         <th>Items</th>
-        <th>Price</th>
+        <th>Total</th>
       </tr>
       {% for order in my_orders %}
         <tr>
           <td>{{ order.date_ordered }}</td>
-          <td>
+
         	{% for item in order.ordered_items.all %}
-        		{{ item.menu_item.name }} ;
+          {% if item.ptoppings %}
+          <td>
+            {{ item.menu_item.name }}
+            Toppings: {{ item.ptoppings }}
+          </td>
+          {% else %}
+          <td>   {{ item.menu_item.name }}</td>
+          {% endif %}
+
       		{% endfor %}
       	  </td>
-          <td>${{ order.get_cart_total }}</td>
+          <td>$ Total Price: {{ order.get_cart_total }}</td>
 
         </tr>
       {% empty %}
@@ -28,7 +36,7 @@
       <tr>
         <td colspan=4>
           <a href="{% url 'orders:index' %}" class="btn btn-warning pull-left">
-            {% if not order %}Continue Shopping{% else %}Add Items to Cart {% endif %}
+            {% if not order %}Return to Menu{% else %}Go to Menu {% endif %}
           </a>
         </td>
       </tr>

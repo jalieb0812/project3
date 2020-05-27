@@ -15,11 +15,17 @@
 
 <h1 class="text-center">Menu</h1>
 
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark  justify-content-center fixed-top">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center fixed-top">
 
 
   <ul class="navbar-nav">
-    <li class="nav-item">
+      <li class="nav-item">
+        <div class="" style="color: white">
+           Hello: {{ user.username }}
+        </div>
+
+        </li>
+        <li class="nav-item">
           <a class="nav-link active" href="#Pizza">Pizza</a>
         </li>
         <li class="nav-item">
@@ -34,6 +40,8 @@
         <li class="nav-item">
           <a class="nav-link" href="#Dinner_Platter">Dinner Platters</a>
         </li>
+
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Menu</a>
           <div class="dropdown-menu">
@@ -46,13 +54,18 @@
              {% endif %}
           </div>
         </li>
-        <li class="nav-item">
 
 
-          <div class="" style="color: white">
-             Hello: {{ user.username }}
-          </div>
+
+          {% for item in menu_item %}
+          {% if item in current_order_products %}
+           <span class="pull-right">
+          <li class="nav-item">
+            <a class="nav-link text-light" href="{% url 'orders:ordersummary' %}">Go to Cart</a>
           </li>
+          </span>
+          {% endif %}
+          {% endfor %}
       </ul>
 
     </nav>
@@ -60,18 +73,15 @@
 
 <div class="my-menu-flex-container">
 
-
-
-
       <div class="col-sm">
-
-
 
           <h2 >Menu Items</h2>
 
 
+
           <table  class="table  table-bordered table-hover">
             <thead>
+
 
 
               <tr>
@@ -79,6 +89,7 @@
                 <th scope="col">Type</th>
                 <th scope="col">Size</th>
                 <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
                 {% if current_order_products %}
                 <th><a href="{% url 'orders:ordersummary' %}" class="btn btn-warning">Go to Cart</a></th>
                 {% else %}
@@ -87,10 +98,12 @@
               </tr>
             </thead>
             <tbody>
-
-
-
               {% for item in menu_item %}
+
+
+        <form class="" action="{% url 'orders:add_to_cart' item.id %}" method="post">
+
+             {% csrf_token %}
 
               {% ifchanged item.category %}
 
@@ -110,22 +123,22 @@
                 <td>{{item.price}}</td>
 
 
-              {% if item.category == "Pizza" %}
+                <td>Quantity<input name="quantity" id="quantity" type="number" value="1" min=1 max=100></td>
+
+
+              {% if item.category == "Pizza" and "Topping" in item.name %}
 
               {% if item in current_order_products %}
               <td><a href="{% url 'orders:ordersummary' %}" class="btn btn-warning">Go to Cart</a></td>
               {% else %}
-             <td><a href="{% url 'orders:customize_order' item.name %}" class="btn btn-warning">Add to Cart</a></td>
+             <td><input type="submit" value="Add to Cart"<a formaction="{% url 'orders:customize_order' item.name %}" class="btn btn-warning"></td>
               {% endif %}
-
 
               {%endif%}
 
-                {% if item in current_order_products %}
-                <td><a href="{% url 'orders:ordersummary' %}" class="btn btn-warning">Go to Cart</a></td>
-                {% else %}
-               <td><a href="{% url 'orders:add_to_cart' item.id %}" class="btn btn-warning">Add to Cart</a></td>
-                {% endif %}
+              <td><input type="submit" value="Add to Cart" class="btn btn-warning"></td>
+
+               <!-- <td><button type="submit"><a href="{% url 'orders:add_to_cart' item.id %}" class="btn btn-warning">Add to Cart</a></button></td> -->
 
 
               </tr>
@@ -134,7 +147,7 @@
             </tbody>
 
           </table>
-
+    </form>
           <br>
         </div>
 

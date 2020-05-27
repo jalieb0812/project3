@@ -93,18 +93,14 @@ def add_to_cart(request, **kwargs):
     # get the user profile
     user_profile = get_object_or_404(Profile, user=request.user)
     # filter products by id
+
+    #menu_item = get_object_or_404(Menu_Item, pk=self.kwargs['pk'])
     menu_item = Menu_Item.objects.filter(id=kwargs.get('item_id', "")).first() #item id sent from the url
 
-    """
-
-    I dont need this
-    # check if the user already owns this product
-    if product in request.user.profile.ebooks.all():
-        messages.info(request, 'You already own this ebook')
-        return redirect(reverse('products:product-list'))
-    """
+    quantity = int(request.POST['quantity'])
+    print(f"quantity:{quantity} \n")
     # create orderItem of the selected menu_item
-    order_item, status = OrderItem.objects.get_or_create(menu_item=menu_item)
+    order_item = OrderItem.objects.create(menu_item=menu_item, quantity=quantity)
 
     # create order associated with the user
     user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
