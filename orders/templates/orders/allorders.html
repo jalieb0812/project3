@@ -17,17 +17,20 @@
           <td>{{order.owner}}</td>
           <td>{{ order.date_ordered }}</td>
 
-        	{% for item in order.ordered_items.all %}
-          {% if item.ptoppings %}
+
           <td>
+            {% for item in order.ordered_items.all %}
+            {% if item.ptoppings %}
             {{ item.menu_item.name }}
             Toppings: {{ item.ptoppings }}
-          </td>
-          {% else %}
-          <td>   {{ item.menu_item.name }}</td>
-          {% endif %}
 
-      		{% endfor %}
+          {% else %}
+           {{ item.menu_item.name }}
+           {% endif %}
+
+          {% endfor %}
+         </td>
+
 
           <td>$ Total Price: {{ order.get_cart_total }}</td>
 
