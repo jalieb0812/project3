@@ -54,19 +54,47 @@
             <td>
               {% for item in order.get_cart_ordered_items %}
                 <tr>
+
+                {%if item.menu_item.category == "Pizza" and "Topping" in item.menu_item.name %}
                   {% if item.ptoppings %}
                   <td>
                     {{ item.menu_item.name }}
                     Toppings: {{ item.ptoppings }}
                   </td>
-                  {% else %}
+                    {% endif %}
+                      {% endif %}
+
+
+                      {%if item.menu_item.category == "Pizza" and "Topping" not in item.menu_item.name %}
+                    <td>
+                            {{ item.menu_item.name }} 
+                    </td>
+                                {% endif %}
+
+
+
+
+                  {% if item.num_extras > 0 %}
+                  <td>
+                    {{ item.menu_item.name }}
+                    Extras: {{ item.extras }}
+                  </td>
+                      {% endif %}
+
+                  {% if item.menu_item.category != "Pizza" and item.menu_item.category != "Subs" %}
                   <td>   {{ item.menu_item.name }}</td>
                   {% endif %}
+
+                  {% if item.num_extras > 0 %}
+              <td>{{ item.menu_item.price }}
+                    + {{item.extras_cost}}</td>
+                    {%else%}
                   <td>${{ item.menu_item.price }}</td>
+
+                  {%endif%}
                 </tr>
               {% endfor %}
-            </td>
-          </tr>
+
           <tr>
             <td><strong>Order Total</strong> </td>
             <td> <strong>${{ order.get_cart_total }}</strong></td>

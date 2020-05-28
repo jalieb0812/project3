@@ -116,11 +116,6 @@ class Items(models.Model):
 
 
 
-
-
-
-
-
 class Pizza(models.Model):
 
     name = "Regular Pizza"
@@ -247,15 +242,18 @@ class OrderItem(models.Model):
     date_added = models.DateTimeField(auto_now=True)
     date_ordered = models.DateTimeField(null=True)
     is_topping =models.BooleanField(default=False)
-    quantity = models.IntegerField(default=1)
+    #quantity = models.IntegerField(default=1)
+    num_extras = models.IntegerField( blank=True, default=0)
+
+    extras = models.CharField(max_length=400,  blank=True, null=True)
+
+    extras_cost = models.DecimalField(max_digits=4,decimal_places=2, default = 0.00)
 
     ptoppings = models.CharField(max_length=400,  blank=True, null=True)
     def __str__(self):
         return f"{self.menu_item} - {self.date_added} - status:{self.is_ordered} \
-         - {self.date_ordered}- {self.is_topping} - Num ordered:{self.quantity}"
-
-
-
+         - {self.date_ordered}- {self.is_topping} - Num extras:{self.num_extras} \
+         - sub_extras {self.extras}"
 
 
 class Order(models.Model):
@@ -276,12 +274,18 @@ class Order(models.Model):
         return self.ordered_items.all()
         #sum of total price of all ordered_items
 
-
     def get_cart_total(self):
 
+    #    Extra = Menu_Item.objects.filter(name="Sub_Extra")
 
-        return sum([item.menu_item.price for item in self.ordered_items.all()])
+
+
+        return sum([item.menu_item.price for item in self.ordered_items.all()]
+        + [item.extras_cost for item in self.ordered_items.all()])
         #.exclude(is_topping=True)])
+
+
+
 
 
     def __str__(self):

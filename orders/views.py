@@ -43,7 +43,7 @@ def index(request):
 
 
 
-    menu_items = Menu_Item.objects.all()
+    menu_items = Menu_Item.objects.exclude(category="Topping")
     filtered_orders = Order.objects.filter(owner=request.user.profile, is_ordered=False)
     current_order_products = []
 
@@ -156,7 +156,9 @@ def customize_order(request, food, **kwargs):
 
         toppings = Menu_Item.objects.filter(category__contains="Topping")
 
-        extras = Menu_Item.objects.filter(category__contains="Extra")
+        extras = Extras.objects.all()
+
+        print (f"extras: {extras}")
 
         pizza_categories = Menu_Item.objects.filter(category__contains="Pizza")
 
@@ -223,12 +225,30 @@ def customize_order(request, food, **kwargs):
             topping3 = False
 
 
-
-
-
     print(f"these are the toppings: {toppings}")
 
 
+    extras = []
+
+    num_extras = 0
+
+    if menu_item.category == "Subs":
+        sub_extras = request.POST.getlist('sub_extras')
+        print(f"sub_extras:{sub_extras} \n")
+
+        for extra in sub_extras:
+
+            extras.append(extra + "+ .50c")
+
+            num_extras += 1
+
+    extras_cost = num_extras * 0.50
+
+    print(f"these are the sub extras: {extras} \n")
+
+    print(f"this is the number of sub extras: {num_extras} \n")
+
+    print(f"this is the total extras price: {extras_cost} \n")
 
 
     #menu_item = Menu_Item.objects.f(pk=kwargs.get('item_id', "")).first() #item id sent from the url
@@ -236,7 +256,8 @@ def customize_order(request, food, **kwargs):
 
 
     # create orderItem of the selected menu_item
-    order_item, status = OrderItem.objects.get_or_create(menu_item=menu_item, ptoppings=toppings)
+    order_item, status = OrderItem.objects.get_or_create(menu_item=menu_item,
+    ptoppings=toppings, extras=extras, num_extras=num_extras, extras_cost=extras_cost )
 
 #    toppingsss, status = OrderItem.objects.get_or_create(ptoppings=toppings, is_topping=True)
 

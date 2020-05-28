@@ -13,18 +13,56 @@ function confirm_delete(){
     <table class="table table-hover table-bordered text-center">
       <tr class="text-center">
         <th>number</th>
+        <th>Category</th>
         <th>Item</th>
-        <th>toppings</th>
         <th>Price</th>
 
       </tr>
       {% for item in order.get_cart_ordered_items %}
         <tr>
           <td>{{ forloop.counter }}</td>
-          <td>{{ item.menu_item.name }}</td>
+            <td>{{ item.menu_item.category }}</td>
 
-          <td>{{item.ptoppings}}</td>
-          <td>{{ item.menu_item.price }}</td>
+
+              {%if item.menu_item.category == "Pizza" and "Topping" in item.menu_item.name %}
+
+            {% if item.ptoppings != False %}
+            <td>
+              {{ item.menu_item.name }}
+              Toppings: {{ item.ptoppings }}
+            </td>
+                {% endif %}
+
+                  {% endif %}
+
+                  {%if item.menu_item.category == "Pizza" and "Topping" not in item.menu_item.name %}
+                <td>
+                        {{ item.menu_item.name }} ;
+                </td>
+                            {% endif %}
+
+
+            {% if item.num_extras > 0 %}
+            <td>
+              {{ item.menu_item.name }}
+              Extras: {{ item.extras }}
+            </td>
+                {% endif %}
+
+            {% if item.menu_item.category != "Pizza" and item.menu_item.category != "Subs" %}
+
+            <td>   {{ item.menu_item.name }}</td>
+
+              {% endif %}
+
+              {% if item.num_extras > 0 %}
+          <td>{{ item.menu_item.price }}
+                + {{item.extras_cost}}</td>
+
+                {% else %}
+
+                <td>{{item.menu_item.price}}</td>
+                    {% endif %}
               <!-- </tr>
               {% for item in order.get_cart_ordered_items_toppings %}
               <tr>
@@ -46,7 +84,7 @@ function confirm_delete(){
         </td>
 
         <td colspan= 1>
-          $<strong>{{ order.get_cart_total }}</strong>
+          $<strong>{{ order.get_cart_total}}</strong>
         </td>
         {% endif %}
       </tr>

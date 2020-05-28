@@ -5,20 +5,25 @@
 {% load static %}
 
 
-<h2 >Enter Toppings for {{ordered_item.name}}</h2>
-
-
-
+<h2 >Enter {%if ordered_item.category == "Pizza"%} Toppings {%elif ordered.category == "Subs"%} Extras {%endif%} for
+  {{ordered_item.name}}  {%if ordered_item.category == "Subs"%} Sub {%endif%}   </h2>
 
 <table  class="table  table-bordered table-hover text-center">
   <thead>
 
    <tr>
 
-      <th scope="col">Category</th>
+     {% if ordered.category == "Subs" %}
+
+      <th scope="col">Extras</th>
+    {% elif ordered_item.category == "Pizza" %}
       <th scope="col">Topping </th>
       <th scope="col">Topping </th>
       <th scope="col">Topping</th>
+
+    {%endif%}
+
+
       {% if current_order_products %}
       <th><a href="{% url 'orders:ordersummary' %}" class="btn btn-warning">Go to Cart</a></th>
       {% else %}
@@ -28,35 +33,57 @@
   </thead>
   <tbody>
 
+{% if ordered_item.category == "Subs" %}
+
+<p>Enter Sub Extras</p>
+
+<tr>
+<td>
+<form class="" action="{% url 'orders:customize_order' food=ordered_item.name %}" method="post">
+       {% csrf_token %}
+
+        {% for extra  in extras %}
+  <div class="form-check">
+  <input class="form-check-input" type="checkbox" name="sub_extras" value="{{extra.name}}" id="{{extra.name}}">
+  <label class="form-check-label" for="{{topping.name}}">
+    {{extra.name}}  {{extra.price}}
+  </label>
+</div>
+            {% endfor %}
+<button class="btn btn-primary" type="submit">Submit</button>
+</form>
+</td>
+
+</tr>
 
 
+
+
+
+
+  <tr>
+{% elif ordered_item.category == "Pizza" %}
 
 {% if "Special" not in ordered_item.name %}
+
 
     <form action="{% url 'orders:customize_order' food=ordered_item.name %}"  method="post">
                {% csrf_token %}
 
-<p>first topping</p>
 
-                {% for topping  in toppings %}
-  <tr>
+    <p>first topping</p>
 
   <td>
-
+  {% for topping  in toppings %}
 <fieldset class="topping1">
   <input type="radio" class="{{topping.name}}" name="topping1" value="{{topping.name}}">
   <label for="{{topping.name}}">{{topping.name}}</label><br>
 </fieldset>
-
-                 {% endfor %}
-
    </td>
 
-
-
+    {% endfor %}
 
 {% if "2" in ordered_item.name or "3" in ordered_item.name %}
-
 
 <td>
 <p>second topping</p>
@@ -74,7 +101,6 @@
 
 {% if "3" in ordered_item.name %}
 
-
 <td>
 <p>third toppings</p>
      {% for topping  in toppings %}
@@ -85,18 +111,25 @@
 
         {% endfor %}
 
-      </td>
+
 
   {% endif %}
 
 
 <button class="btn btn-primary" type="submit">Submit</button>
 
+</td>
+</form>
 
   {% endif %}
 
+
+</tr>
+
+
 {% if "Special" in ordered_item.name %}
 
+<tr>
 
 <td>
 <form class="" action="{% url 'orders:customize_order' food=ordered_item.name %}" method="post">
@@ -111,16 +144,20 @@
 </div>
 {% endfor %}
 <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+</td>
+
+</tr>
+{% endif %}
 
 {% endif %}
 
 
-</form>
-</td>
-</tr>
+
 
 </tbody>
 
 </table>
+
 
 {%endblock%}
