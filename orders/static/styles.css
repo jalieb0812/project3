@@ -9,10 +9,15 @@ main {
 
   /* center contents */
 
-  align-content: center;
+  justify-content:  center;
 
   margin-top: 20px;
 
+}
+
+.btn {
+
+   display:inline-block
 }
 
 .flex-container{
@@ -30,6 +35,26 @@ h2{
   margin-top: 36px;
 }
 
+.order-Summary-flex-container{
+
+
+
+
+  justify-content: center;
+
+  scroll-behavior: auto;
+
+  width: 90%;
+
+  height: 95vh;
+
+  padding: 14px 16px;
+
+  margin-top: 20px;
+
+
+
+}
 
 .my-menu-flex-container{
 
@@ -44,7 +69,6 @@ h2{
 
   width: 90%;
 
-  height: 90%;
 
   padding: 14px 16px;
 
@@ -52,7 +76,9 @@ h2{
 
 
 
-  height: 95vh;
+  height: 100%;
+
+  overflow-y: auto;
 
 
 }

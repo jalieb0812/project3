@@ -43,7 +43,7 @@ def index(request):
 
 
 
-    menu_items = Menu_Item.objects.exclude(category="Topping")
+    menu_items = Menu_Item.objects.exclude(category__icontains="Topping" and "Extra")
     filtered_orders = Order.objects.filter(owner=request.user.profile, is_ordered=False)
     current_order_products = []
 

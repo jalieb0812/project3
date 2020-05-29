@@ -3,6 +3,7 @@
 
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'orders/styles.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -18,39 +19,73 @@
 -->
     <title>{% block title %}{% endblock %}</title>
   </head>
-  <body data-spy="scroll" data-target=".navbar" data-offset="50">
+  <body id data-spy="scroll" data-target=".navbar" data-offset="50">
 
-    <nav class="navbar bg-info row justify-content-center">
+    <nav id="hidenav" class="navbar navbar-expand-lg bg-dark navbar-dark justify-content-center fixed-top">
 
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-nav"
+         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbar-nav">
 
-    <!--
-    {% if request.user.is_superuser %}
-    <a class="nav-link text-light" href="/manage/order"><h5>Manage</h5></a>
-    {% endif %}
-    <a class="nav-link text-light" href="/"><h5>Menu</h5></a>
-    <a class="nav-link text-light" href="/reviews"><h5>Review</h5></a>
-    <a class="nav-link text-light" href="/user/order"><h5>Order</h5></a>
-    <a class="nav-link text-light" href="/cart"><h5>Cart</h5></a>
-    -->
+    <ul class="navbar-nav mr-auto">
+
     {% if not request.user.is_authenticated %}
+    <li class="nav-item">
+    <a class="nav-link text-light" href="/login">Login</a>
+    </li>
+      <li class="nav-item">
+    <a class="nav-link text-light" href="/register">Register</a>
+    </li>
 
-    <a class="nav-link text-light" href="/login"><h5>Login</h5></a>
-    <a class="nav-link text-light" href="/register"><h5>Register</h5></a>
-    <a class="nav-link text-light" href="/"><h5>menu</h5></a>
+      <li class="nav-item">
+    <a class="nav-link text-light" href="/">menu</a>
+    </li>
     {% else %}
-    <a class="nav-link text-light" href="/"><h5>Menu</h5></a>
-    <a class="nav-link text-light" href="/profile"><h5>Profile</h5></a>
-    <a class="nav-link text-light" href="/logout"><h5>Logout</h5></a>
+
+      <li class="nav-item">
+    <a class="nav-link text-light" href="/">Menu</a>
+    </li>
+
+      <li class="nav-item">
+    <a class="nav-link text-light" href="/profile">Profile</a>
+    </li>
+
+      <li class="nav-item">
+    <a class="nav-link text-light" href="/logout">Logout</a>
+    </li>
+    {% endif %}
+
+    {% if current_order_products  %}
+     <li>
+
+      <a class="nav-link text-light" href="{% url 'orders:ordersummary' %}">Go to Cart</a>
+    </li>
+
+    {% endif %}
+
+    {% if order %}
+      <li class="nav-item">
+    <a class="nav-link text-light" href="{% url 'orders:ordersummary' %}">Go to Cart</a>
+      </li>
     {% endif %}
     {% if request.user.is_superuser %}
-     <a class="nav-link text-light" href="/admin"><h5>Admin</h5></a>
-      <a class="nav-link text-light" href="/allorders"><h5>All Orders</h5></a>
+      <li class="nav-item">
+     <a class="nav-link text-light" href="/admin">Admin</a>
+       </li>
+
+    <li class="nav-item">
+    <a class="nav-link text-light" href="/allorders">All Orders</a>
+    </li>
      {% endif %}
-  </nav>
+</ul>
+         </div>
+      </nav>
 
 
-  <div class="container">
+      <div  class="container" >
       {% block body %}{% endblock %}
-
+    </div>
   </body>
 </html>

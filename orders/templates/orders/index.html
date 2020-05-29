@@ -6,26 +6,22 @@
 
 
 {% load static %}
-<script> </script>
+
 
 
 {% block body %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'orders/index.css' %}">
 
+   <nav class="navbar navbar-expand-lg bg-dark navbar-dark justify-content-center fixed-top">
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-nav"
+     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon"></span>
+      </button>
 
-   <h1 class="text-center">Menu</h1>
+      <div class="collapse navbar-collapse" id="navbar-nav">
 
-   <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center fixed-top">
-
-
-     <ul class="navbar-nav">
-         <li class="nav-item">
-           <div class="" style="color: white">
-             Hello: {{ user.username }}
-
-          </div>
-
-         </li>
+     <ul class="navbar-nav mr-auto">
 
          <li class="nav-item">
 
@@ -68,38 +64,40 @@
           </div>
         </li>
 
+      </ul>
+      <span class="nav-item">
+        <div class="" style="color: white">
+          Hello: {{ user.username }}
 
-
+       </div>
+      </span>
 
           {% if current_order_products != NONE %}
-           <span class="pull-right">
-          <li class="nav-item">
-            <a class="nav-link text-light" href="{% url 'orders:ordersummary' %}">Go to Cart</a>
-          </li>
+           <span class=" ">
+
+            <a class="nav-link text-light" href="{% url 'orders:ordersummary' %}"><h5>Go to Cart</h5></a>
+
           </span>
           {% endif %}
-
-      </ul>
-
+      </div>
     </nav>
 
 
-<div class="my-menu-flex-container">
-
-      <div class="col-sm">
-
-          <h2 >Menu Items</h2>
+        <div class="my-menu-flex-container">
 
 
 
-          <table  class="table  table-bordered table-hover">
-            <thead>
+          <table  class="table-dark table-sm  table-responsive-sm text-center
+          table-bordered table-hover" style="width:100%">
+            <thead class="thead-dark">
 
 
-
+              <tr class="bg-primary">
+                      <th colspan="5"><h1>MENU</h1></th>
+              </tr>
               <tr>
-                <th scope="col">Category</th>
-                <th scope="col">Type</th>
+
+                <th scope="col">Item</th>
                 <th scope="col">Size</th>
                 <th scope="col">Price</th>
 
@@ -121,34 +119,27 @@
               {% ifchanged item.category %}
 
 
-              <tr id="{{item.category}}">
+              <tr class="table-info text-dark" id="{{item.category}}">
 
-                <th scope="row" colspan="5"  >   {{ item.category }}</th>
+                <th scope="row" colspan="5"  > <h2> {{ item.category }} </h2> </th>
 
 
              </tr> {% endifchanged %}
 
               <tr>
-                <th scope="row">{{item.category}}</th>
 
                 <td>{{item.name}}</td>
                 <td>{{item.sizes}}</td>
                 <td>{{item.price}}</td>
 
 
-
-
-
               {% if item.category == "Pizza" and "Topping" in item.name %}
 
-              <!-- {% if item in current_order_products %}
-              <td><a href="{% url 'orders:ordersummary' %}" class="btn btn-warning">Go to Cart</a></td>
-              {% else %} -->
-              <td><a href="{% url 'orders:customize_order' item.name %}" class="btn btn-warning">Add to Cart; choose toppings</a></td>
-             <!-- <td><input type="submit" value="Add to Cart"<a formaction="{% url 'orders:customize_order' item.name %}" class="btn btn-warning"></td> -->
-              <!-- {% endif %} -->
+
+              <td><a href="{% url 'orders:customize_order' item.name %}" class="btn btn-warning">Add to Cart</a></td>
+
               {% elif item.category == "Subs" %}
-              <td><a href="{% url 'orders:customize_order' item.name %}" class="btn btn-warning">Add to Cart; choose toppings</a></td>
+              <td><a href="{% url 'orders:customize_order' item.name %}" class="btn btn-warning">Add to Cart</a></td>
             {% else %}
               <td><a href="{% url 'orders:add_to_cart' item.id %}" class="btn btn-warning">Add to Cart</a></td>
             {%endif%}
@@ -168,192 +159,3 @@
         </div>
 
 {% endblock %}
-
-<!--
-
-ifchanged
-Check if a value has changed from the last iteration of a loop.
-
-The  block tag is used within a loop. It has two possible uses.
-
-Checks its own rendered contents against its previous state and only displays the content if it has changed. For example, this displays a list of days, only displaying the month if it changes:
-
-
-
-<h1>Menu Items2</h1>
-
-  <table id="full_menu" class="table-responsive display table-bordered table-hover table-sm">
-
-
-    <thead>
-      <tr>
-        <th scope="col">Category</th>
-        <th scope="col">Type</th>
-        <th scope="col">Size</th>
-        <th scope="col">Price</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for item in menu_item %}
-    {% ifchanged menu_item.category %}   <tr class="menu_item.category">
-    {{ menu_item.category }} </tr> {% endifchanged %}
-
-      <tr>
-        <th scope="row">{{item.category}}</th>
-
-        <td>{{item.name}}</td>
-        <td>{{item.sizes}}</td>
-        <td>{{item.price}}</td>
-
-      </tr>
-  {% for category in categories %}
-      <tr>
-        <th>
-            {{category}}
-        </th>
-      </tr>
-        {% endfor %}
-
-    {% endfor %}
-
-
-
-
-  </tbody>
-    </table>
-</div>
-
-
--->
-
-
-<!--
-<h3>pizza table</h3>
-  <table class="table-responsive display table-bordered table-hover table-sm">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-        <th scope="col">Size</th>
-        <th scope="col">Price</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for pizza_type in pizza_categories %}
-      <tr>
-        <th scope="row">{{pizza_type.name}}</th>
-
-        <td>{{pizza_type.sizes}}</td>
-        <td>{{pizza_type.price}}</td>
-
-      </tr>
-    {% endfor %}
-
-    </tbody>
-  </table>
-
-</div>
-
-
-<div class="col-sm">
-
-
-  <!--
-<h1>Menu Items</h1>
-
-
-
-
-<table id="full_menu" class="table-responsive  table-bordered table-hover table-sm">
-<thead>
-
-
-<tr>
-<th scope="col">Category</th>
-<th scope="col">Type</th>
-<th scope="col">Size</th>
-<th scope="col">Price</th>
-</tr>
-</thead>
-<tbody>
-
-{% for item in menu_item %}
-
-{% if item.category == "Pizza" %}
-
-<tr>
-
-<th scope="row">{{item.category}}</th>
-
-<td>{{item.name}}</td>
-<td>{{item.sizes}}</td>
-<td>{{item.price}}</td>
-
-</tr>
-{% endif %}
-
-
-
-{% if item.category == "Pasta" %}
-<tr>
-
-<th scope="row">{{item.category}}</th>
-
-<td>{{item.name}}</td>
-<td>{{item.sizes}}</td>
-<td>{{item.price}}</td>
-
-</tr>
-{% endif %}
-
-
-
-
-{% if item.category == "Subs" %}
-<tr>
-
-<th scope="row">{{item.category}}</th>
-
-<td>{{item.name}}</td>
-<td>{{item.sizes}}</td>
-<td>{{item.price}}</td>
-
-</tr>
-{% endif %}
-
-{% if item.category == "Salad" %}
-<tr>
-
-<th scope="row">{{item.category}}</th>
-
-<td>{{item.name}}</td>
-<td>{{item.sizes}}</td>
-<td>{{item.price}}</td>
-
-</tr>
-{% endif %}
-
-{% if item.category == "Dinner_Platter" %}
-<tr>
-
-<th scope="row">{{item.category}}</th>
-
-<td>{{item.name}}</td>
-<td>{{item.sizes}}</td>
-<td>{{item.price}}</td>
-
-</tr>
-{% endif %}
-
-
-{% endfor %}
-
-
-</tbody>
-
-</table>
-
-<br>
-
-</div>
-
--->
