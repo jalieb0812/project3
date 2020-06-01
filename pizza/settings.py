@@ -53,7 +53,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'pizza.urls'
 
-LOGIN_URL= 'orders/login.html'
+LOGIN_URL= '/login'
 
 TEMPLATES = [
     {

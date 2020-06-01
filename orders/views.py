@@ -16,6 +16,9 @@ import datetime
 
 # Create your views here.
 
+
+""" user profile view"""
+@login_required()
 def profile(request):
 
     my_user_profile = Profile.objects.filter(user=request.user).first()
@@ -26,6 +29,7 @@ def profile(request):
 
     return render(request, "orders/profile.html", context)
 
+""" view for all orders summary"""
 def allorders(request):
 
     profiles = Profile.objects.all()
@@ -35,7 +39,9 @@ def allorders(request):
     context = { 'all_orders': all_orders}
 
     return render(request, "orders/allorders.html", context)
-#@login_required(login_url='login')
+
+""" menu view """
+@login_required()
 def index(request):
 
     if not request.user.is_authenticated:
@@ -43,7 +49,7 @@ def index(request):
 
 
 
-    menu_items = Menu_Item.objects.exclude(category__icontains="Topping" and "Extra")
+    menu_items = Menu_Item.objects.exclude(category__icontains="Topping")
     filtered_orders = Order.objects.filter(owner=request.user.profile, is_ordered=False)
     current_order_products = []
 
@@ -97,24 +103,28 @@ def index(request):
     }
     return render(request, "orders/index.html", context)
 
-
+@login_required()
 def add_to_cart(request, **kwargs):
     # get the user profile
     user_profile = get_object_or_404(Profile, user=request.user)
     # filter products by id
 
     #menu_item = get_object_or_404(Menu_Item, pk=self.kwargs['pk'])
+    #check to see why is this a tuple object
     menu_item = Menu_Item.objects.filter(id=kwargs.get('item_id', "")).first() #item id sent from the url
 
-    # quantity = int(request.POST['quantity'])
-    # print(f"quantity:{quantity} \n")
+#    print(f"menuitem: {menu_item.category}")
+    quantity = int(request.POST['quantity'])
+    print(f"quantity:{quantity} \n")
     # create orderItem of the selected menu_item
-    order_item = OrderItem.objects.create(menu_item=menu_item)
+
+    for x in range(quantity):
+        order_item = OrderItem.objects.create(menu_item=menu_item)
 
     # create order associated with the user
-    user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
+        user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
 
-    user_order.ordered_items.add(order_item)
+        user_order.ordered_items.add(order_item)
 
     #print(f"the are the current order products: {current_order_products}")
 
@@ -131,7 +141,7 @@ def add_to_cart(request, **kwargs):
 
     return HttpResponseRedirect(reverse('orders:index'))
 
-
+@login_required()
 def delete_from_cart(request, item_id):
     item_to_delete = OrderItem.objects.filter(pk=item_id)
     if item_to_delete.exists():
@@ -139,6 +149,7 @@ def delete_from_cart(request, item_id):
         #messages.info(request, "Item has been deleted")
     return redirect(reverse('orders:ordersummary'))
 
+@login_required()
 def customize_order(request, food, **kwargs):
 
     if request.method == "GET":
@@ -170,6 +181,7 @@ def customize_order(request, food, **kwargs):
         ordered_item = Menu_Item.objects.filter(name=food).first()
 
 
+
         context ={
 
                 "ordered_item": ordered_item,
@@ -197,6 +209,9 @@ def customize_order(request, food, **kwargs):
 
     menu_item = Menu_Item.objects.filter(name=food).first()
     print (f"this is menu item in get {menu_item}")
+
+
+
 
     toppings = []
 
@@ -234,7 +249,7 @@ def customize_order(request, food, **kwargs):
 
     if menu_item.category == "Subs":
         sub_extras = request.POST.getlist('sub_extras')
-        print(f"sub_extras:{sub_extras} \n")
+        #print(f"sub_extras:{sub_extras} \n")
 
         for extra in sub_extras:
 
@@ -242,46 +257,51 @@ def customize_order(request, food, **kwargs):
 
             num_extras += 1
 
+    #use get to get the price of extras
+
     extras_cost = num_extras * 0.50
 
-    print(f"these are the sub extras: {extras} \n")
+    #print(f"these are the sub extras: {extras} \n")
 
-    print(f"this is the number of sub extras: {num_extras} \n")
+    #print(f"this is the number of sub extras: {num_extras} \n")
 
-    print(f"this is the total extras price: {extras_cost} \n")
+    #print(f"this is the total extras price: {extras_cost} \n")
 
 
     #menu_item = Menu_Item.objects.f(pk=kwargs.get('item_id', "")).first() #item id sent from the url
 
 
 
-    # create orderItem of the selected menu_item
-    order_item, status = OrderItem.objects.get_or_create(menu_item=menu_item,
-    ptoppings=toppings, extras=extras, num_extras=num_extras, extras_cost=extras_cost )
+    # create orderItem of the selected menu_item\
+    quantity = int(request.POST['quantity'])
+    print(f"custom quantity:{quantity} \n")
 
-#    toppingsss, status = OrderItem.objects.get_or_create(ptoppings=toppings, is_topping=True)
+    counter = 0
+    for x in range(quantity):
+
+        counter += 1
+        print (f"counter: {counter}")
+        #order_item = OrderItem.objects.create(menu_item=menu_item)
+        order_item = OrderItem.objects.create(menu_item=menu_item,
+        ptoppings=toppings, extras=extras, num_extras=num_extras, extras_cost=extras_cost )
 
 
-    #total = OrderItem.objects.all().aggregate(sum('price')).values()
+    #print (f"this is order_item item in get {order_item} \n")
 
-    #print (f"{total}")
-
-    print (f"this is order_item item in get {order_item} \n")
-
-    print (f"this is topings order item in get {toppings} \n")
+    #print (f"this is topings order item in get {toppings} \n")
 
 
     #order_item.toppings = topping
-    print (f"this is order item item with toppings: {order_item}")
+    #print (f"this is order item item with toppings: {order_item}")
 
 
     #user_orderitem, status = OrderItem.objects.get_or_create( is_ordered=False)
 
     #user_orderitem.save()
     # create order associated with the user
-    user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
+        user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
 
-    user_order.ordered_items.add(order_item)
+        user_order.ordered_items.add(order_item)
     #user_order.ordered_items.add(toppingsss)
 
 
@@ -295,7 +315,7 @@ def customize_order(request, food, **kwargs):
         #user_order.ref_code = generate_order_id()
         user_order.save()
 
-    print (f"this is user order in get {user_order.ordered_items.all()}")
+    #print (f"this is user order in get {user_order.ordered_items.all()}")
 
 
 
@@ -313,6 +333,7 @@ def customize_order(request, food, **kwargs):
 
         #    toppings = request.form.get()
 
+@login_required()
 def get_user_pending_order(request):
     # get order for the correct user
     user_profile = get_object_or_404(Profile, user=request.user)
@@ -322,6 +343,7 @@ def get_user_pending_order(request):
         return order[0]
     return 0
 
+@login_required()
 def order_details(request, **kwargs):
     #user_profile = get_object_or_404(Profile, user=request.user)
     #current_order = Order.objects.filter (owner=user_profile, is_ordered=False)
@@ -356,7 +378,7 @@ def order_details(request, **kwargs):
     }
     return render(request, 'orders/ordersummary.html', context)
 
-
+@login_required()
 def checkout(request, **kwargs):
     existing_order = get_user_pending_order(request)
 
@@ -366,6 +388,8 @@ def checkout(request, **kwargs):
 
     return render(request, 'orders/checkout.html', context)
 
+
+@login_required()
 def process_payment(request, order_id):
     # process payment; just using this as a way to pass in the order_id to checkout
     return redirect (reverse('orders:updaterecords',
@@ -374,6 +398,7 @@ def process_payment(request, order_id):
                         })
                         )
 
+@login_required()
 def updaterecords(request, order_id):
     # get the order being processed
     order_to_purchase = Order.objects.filter(pk=order_id).first()
@@ -419,7 +444,7 @@ def updaterecords(request, order_id):
     # redirects to users profiel so they can see the order
     return redirect(reverse('orders:success'))
 
-
+@login_required()
 def get_user_ordered_items(request):
     # get order for the correct user
     user_profile = get_object_or_404(Profile, user=request.user)
@@ -430,6 +455,7 @@ def get_user_ordered_items(request):
     return 0
 
 # not sure i need this view.
+@login_required()
 def success(request, **kwargs):
     # a view signifying the transcation was successful
     finished_order = get_user_ordered_items(request)
@@ -621,14 +647,9 @@ def login_view(request):
         return render(request, "orders/login.html")
 
 
-
     username = request.POST["username"]
     password = request.POST["password"]
     user = authenticate(request, username=username, password=password)
-
-
-
-
 
 
     if user is not None:

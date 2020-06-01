@@ -43,6 +43,19 @@
 
 
 
+                  <!-- subs with no extras -->
+
+                  {% if item.menu_item.category == "Subs" and item.num_extras == 0 %}
+
+                  <td>
+                    {{item.menu_item.sizes}}
+
+                    {{ item.menu_item.name }}
+
+                  </td>
+
+                  {% endif %}
+
 
                   {% if item.num_extras > 0 %}
                   <td>

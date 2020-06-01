@@ -23,15 +23,29 @@ main {
 
   align-content: center;
 
-
+  margin-top: 50px;
 
 
 }
 
-.flex-container{
+.container-login{
 
-  margin-top: 36px;
+  display: flex;
+
+  text-align: center;
+
+  align-items: center;
+
+  color: white;
+
+  padding: 15px;
+
+  justify-content: center;
+
+  margin-top: 15%;
 }
+
+
 .flex-row{
 
   justify-content: center;
@@ -59,9 +73,10 @@ h2{
 
   height: 90%;
 
+
   padding: 5px 5px;
 
-  margin-top: 50px;
+  margin-top: 30px;
 
 
 
@@ -87,13 +102,17 @@ h2{
   border: 2px solid green;
   height: 200px;
   margin-bottom: 20px;
+
+  text-align: center;
+
+  color: white;
 }
 
 .my-flex-item {
   background-color: lightgrey;
   border: 1px dotted grey;
   height: auto;
-  align-items: flex-end;
+  align-items: center;
 
 }
 
