@@ -47,9 +47,9 @@ class Menu_Item(models.Model):
     )
 
     SIZE_CATEGORIES = (
-    ('S', 'Small'),
-    ('M', 'Medium'),
-    ('L', 'Large'),
+    ('Sm', 'Small'),
+    ('Md', 'Medium'),
+    ('Lg', 'Large'),
     ('XL', 'Extra_Large')
     )
 

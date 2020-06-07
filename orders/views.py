@@ -6,6 +6,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils.datastructures import MultiValueDictKeyError
+from django.contrib import messages
 
 #from accounts.models import Profile
 
@@ -138,10 +139,10 @@ def add_to_cart(request, **kwargs):
         user_order.save()
 
     # show confirmation message and redirect back to the same page
-    #messages.info(request, "item added to cart")
+    messages.info(request, f" {quantity} {menu_item.sizes} {menu_item.name} added to cart")
 
 
-    return HttpResponseRedirect(reverse('orders:index', message = "order placed!."))
+    return HttpResponseRedirect(reverse('orders:index'))
 
 @login_required()
 def delete_from_cart(request, item_id):
@@ -325,6 +326,7 @@ def customize_order(request, food, **kwargs):
         #user_order.ref_code = generate_order_id()
         user_order.save()
 
+    messages.info(request, f" {quantity} {menu_item.sizes} {menu_item.name} added to cart")
     #print (f"this is user order in get {user_order.ordered_items.all()}")
 
 
