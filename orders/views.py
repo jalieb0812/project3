@@ -25,7 +25,6 @@ def profile(request):
     my_user_profile = Profile.objects.filter(user=request.user).first()
     my_orders = Order.objects.filter(is_ordered=True, owner=my_user_profile)
 
-
     context = { 'my_orders': my_orders}
 
     return render(request, "orders/profile.html", context)
@@ -35,7 +34,6 @@ def allorders(request):
 
     profiles = Profile.objects.all()
     all_orders = Order.objects.filter(is_ordered=True)
-
 
     context = { 'all_orders': all_orders}
 
@@ -48,59 +46,29 @@ def index(request):
     if not request.user.is_authenticated:
         return render(request, "orders/login.html", {"message": None})
 
+        #get all items on menu except toppings and extras
+    menu_items = Menu_Item.objects.exclude(category__icontains="Topping").exclude(category__icontains="Extra")
 
 
-    menu_items = Menu_Item.objects.exclude(category__icontains="Topping")
+    #get the ordered items so far
     filtered_orders = Order.objects.filter(owner=request.user.profile, is_ordered=False)
     current_order_products = []
 
+    item_count = 0
+
     if filtered_orders.exists():
         user_order = filtered_orders[0]
-        user_order_items = user_order.ordered_items.all() # warning 2 menu_items variables
+        user_order_items = user_order.ordered_items.all()
         current_order_products = [menu_item.menu_item for menu_item in user_order_items]
-
-    categories =  ["Pizza", "Pasta", "Subs", "Salad", "Dinner_Plater", "Topping",
-                  "Extra", "Dessert", "Pastry", "Main", "Appetizer", "Side", "Miscellaneous"]
-
-
-
-    pizza_categories = Menu_Item.objects.filter(category__contains="Pizza")
-
-    toppings = Menu_Item.objects.filter(category__contains="Topping")
-
-    extras = Menu_Item.objects.filter(category__contains="Extra")
-
-    sub_categories = Menu_Item.objects.filter(category__contains="Subs")
-
-    salad_categories = Menu_Item.objects.filter(category__contains="Salad")
-
-    dinner_platter_categories = Menu_Item.objects.filter(category__contains="Dinner_Platter")
-
-    pasta_categories = Menu_Item.objects.filter(category__contains="Pasta")
-
+        item_count = user_order.ordered_items.count()
 
 
     context ={
 
         'current_order_products': current_order_products,
-
-
+        'item_count': item_count,
         "user": request.user,
-
-        "categories": categories,
-
         "menu_item": menu_items,
-        "pizza_categories": pizza_categories,
-        "toppings": toppings,
-        "extras": extras,
-        "sub_categories": sub_categories,
-        "salad_categories": salad_categories,
-        "dinner_platter_categories": dinner_platter_categories,
-        "pasta_categories": pasta_categories,
-
-        "Pizza": Pizza.objects.all(),
-        "pizza_toppings": Pizza.toppings,
-        "Toppings": Topping.objects.all(),
 
 
     }
@@ -331,19 +299,10 @@ def customize_order(request, food, **kwargs):
 
 
 
-
-
         #return render(request, "orders/customize_order.html", context)
 
     return HttpResponseRedirect(reverse('orders:index'))
 
-
-
-
-    #    if request.method== "POST":
-
-
-        #    toppings = request.form.get()
 
 @login_required()
 def get_user_pending_order(request):
@@ -437,23 +396,11 @@ def updaterecords(request, order_id):
     user_profile.save()
 
 
-    """
-    # create a transaction
-    transaction = Transaction(profile=request.user.profile,
-                            token=token,
-                            order_id=order_to_purchase.id,
-                            amount=order_to_purchase.get_cart_total(),
-                            success=True)
-    # save the transcation (otherwise doesn't exist)
-    transaction.save()
-    """
-
-
     # send an email to the customer
     # look at tutorial on how to send emails with sendgrid
     #messages.info(request, " Order complete! Thank you!")
 
-    # redirects to users profiel so they can see the order
+    # redirects to users profile so they can see the order
     return redirect(reverse('orders:success'))
 
 @login_required()

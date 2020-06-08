@@ -264,6 +264,9 @@ class Order(models.Model):
     # payment_details = models.ForeignKey(Payment, null=True)
     date_ordered = models.DateTimeField(auto_now=True)
 
+    # reutrn number of ordered items.
+    def num_order_items(self):
+        return self.order_items.count()
 
     #get all the orders ordered_items
     def get_cart_ordered_items(self):
