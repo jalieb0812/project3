@@ -10,10 +10,10 @@ able to add and update menu items, and view orders that have been placed from
 the admin page.
 
 Personal Touch. My personal touch was to add the ability for users to see a
-their user profile that contains a table showing the details of the user's
-previous orders. User's can access their profile from any page once logged in.
+ user profile that contains a table showing the details of the user's
+previous confirmed orders. User's can access their profile from any page once logged in.
 Users do have the ability to see their cart at any moment. Also, the admin can
-in theory chance the status or any detail of an order during and after the order
+in theory change the status or any detail of an order during and after the order
 is placed through the admin (but I didn't really work on this feature,
  its just a product of the models I used)}
 
@@ -75,6 +75,8 @@ laoding the cart summary, checkout page and order success page. The upon
 checkout the ordered items is_ordered field is switched to true confirming
  the item has been ordered.
 
+Pizza Directory:
+Left this pretty much as it came out of the box. I did not modify the Admin.
 
 Thank you to Matt from JustDjango for the helpful tutorial
  on e-commerce with django!

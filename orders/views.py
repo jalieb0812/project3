@@ -45,11 +45,13 @@ def index(request):
         return render(request, "orders/login.html", {"message": None})
 
     #get all items on menu except toppings and extras
-    menu_items = Menu_Item.objects.exclude(category__icontains="Topping").exclude(category__icontains="Extra")
+    menu_items = Menu_Item.objects.exclude(category__icontains="Topping") \
+    .exclude(category__icontains="Extra")
 
 
     #get the ordered items so far
-    filtered_orders = Order.objects.filter(owner=request.user.profile, is_ordered=False)
+    filtered_orders = Order.objects.filter(owner=request.user.profile,
+                                          is_ordered=False)
     current_order_products = []
 
     item_count = 0
@@ -58,7 +60,8 @@ def index(request):
     if filtered_orders.exists():
         user_order = filtered_orders[0]
         user_order_items = user_order.ordered_items.all()
-        current_order_products = [menu_item.menu_item for menu_item in user_order_items]
+        current_order_products = [menu_item.menu_item for menu_item
+                                in user_order_items]
 
         #get number of items in cart
         item_count = user_order.ordered_items.count()
@@ -89,14 +92,17 @@ def add_to_cart(request, **kwargs):
     for x in range(quantity):
         order_item = OrderItem.objects.create(menu_item=menu_item)
     # create order associated with the user
-        user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
+        user_order, status = Order.objects.get_or_create(owner=user_profile,
+                                                        is_ordered=False)
+
         user_order.ordered_items.add(order_item)
 
     if status:
         user_order.save()
 
     # show confirmation message and redirect back to the same page
-    messages.info(request, f" {quantity} {menu_item.sizes} {menu_item.name} added to cart")
+    messages.info(request, f" {quantity} {menu_item.sizes} \
+                            {menu_item.name} added to cart")
 
     return HttpResponseRedirect(reverse('orders:index'))
 
@@ -146,7 +152,8 @@ def customize_order(request, food, *args,**kwargs):
 
         if len(toppings) < 4:
 
-            messages.info(request, "You chose less than 3 toppings! A special pizza needs \
+            messages.info(request, "You chose less than 3 toppings! \
+             A special pizza needs \
             4 or more toppings! ")
             # get all menu items
             menu_items = Menu_Item.objects.all()
@@ -212,16 +219,21 @@ def customize_order(request, food, *args,**kwargs):
     for x in range(quantity):
         #order_item = OrderItem.objects.create(menu_item=menu_item)
         order_item = OrderItem.objects.create(menu_item=menu_item,
-        ptoppings=toppings, extras=extras, num_extras=num_extras, extras_cost=extras_cost )
+        ptoppings=toppings, extras=extras, num_extras=num_extras,
+        extras_cost=extras_cost )
+
+
         # create order associated with the user
-        user_order, status = Order.objects.get_or_create(owner=user_profile, is_ordered=False)
+        user_order, status = Order.objects.get_or_create(owner=user_profile,
+                                                        is_ordered=False)
 
         user_order.ordered_items.add(order_item)
 
     if status:
         user_order.save()
 
-    messages.info(request, f" {quantity} {menu_item.sizes} {menu_item.name} added to cart")
+    messages.info(request, f" {quantity} {menu_item.sizes} {menu_item.name} \
+                            added to cart")
 
     return HttpResponseRedirect(reverse('orders:index'))
 
@@ -235,7 +247,9 @@ def delete_from_cart(request, item_id):
     deleted_item = OrderItem.objects.get(pk=item_id)
     if item_to_delete.exists():
         item_to_delete[0].delete()
-        messages.info(request, f" {deleted_item.menu_item.sizes} {deleted_item.menu_item.name}  removed from cart")
+        messages.info(request, f" {deleted_item.menu_item.sizes} \
+            {deleted_item.menu_item.name}  removed from cart")
+
     return redirect(reverse('orders:ordersummary'))
 
 
@@ -337,25 +351,35 @@ def register_view(request):
 
     """ validate credentials server side"""
     if not user:
-        return render(request, 'orders/register.html', {"message": "No username."})
+        return render(request, 'orders/register.html',
+                        {"message": "No username."})
+
     if len(user) < 4:
-        return render(request, 'orders/register.html', {"message": "Username should be longer than 4 characters."})
+        return render(request, 'orders/register.html',
+         {"message": "Username should be longer than 4 characters."})
+
     if not email:
-        return render(request, 'orders/register.html', {"message": "Please enter a Proper Email."})
+        return render(request, 'orders/register.html',
+        {"message": "Please enter a Proper Email."})
+
     # Email validation required.
     if not password or not password_confirmation:
-        return render(request, 'orders/register.html', {"message": "Please enter a valid password."})
+        return render(request, 'orders/register.html',
+        {"message": "Please enter a valid password."})
 
     if password != password_confirmation:
-        return render(request, 'orders/register.html', {"message": "Passwords don't match. Please re-enter passwords"})
+        return render(request, 'orders/register.html',
+        {"message": "Passwords don't match. Please re-enter passwords"})
 
     if len(password) < 4 or len(password_confirmation) < 4 :
-        return render(request, 'orders/register.html', {"message": "Password must be at least 4 charachters long."})
+        return render(request, 'orders/register.html',
+        {"message": "Password must be at least 4 charachters long."})
 
     try:
         User.objects.create_user(user, email, password)
     except:
-        return render(request, 'orders/register.html', {"message": "Registration failed."})
+        return render(request, 'orders/register.html',
+        {"message": "Registration failed."})
 
     if first_name:
         User.first_name = first_name
@@ -378,11 +402,13 @@ def login_view(request):
         login(request, user)
         return HttpResponseRedirect(reverse("orders:index"))
     else:
-        return render(request, "orders/login.html", {"message": "Invalid credentials."})
+        return render(request, "orders/login.html",
+                {"message": "Invalid credentials."})
 
 
 def logout_view(request):
 
     logout(request)
 
-    return render(request, "orders/login.html", {"message": "Successfully logged out."})
+    return render(request, "orders/login.html",
+        {"message": "Successfully logged out."})

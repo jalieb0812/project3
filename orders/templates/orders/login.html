@@ -31,7 +31,6 @@ Login
       </div>
 
 
-
       <form class="form-conrtol" action="{% url 'orders:login' %}" method="post">
         {% csrf_token %}
 
@@ -53,18 +52,18 @@ Login
 
         <div class="row justify-content-center">
 
-        <input class="btn btn-primary mr-1" type="submit" value="Login">
+          <input class="btn btn-primary mr-1" type="submit" value="Login">
       </form>
 
       <a href="{% url 'orders:register' %}" class="btn btn-info">Register</a>
 
-      </div>
-
-
     </div>
 
 
-
   </div>
+
+
+
+</div>
 </div>
 {% endblock %}

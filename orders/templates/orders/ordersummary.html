@@ -12,8 +12,8 @@
 
     {% if messages %}
     {% for message in messages %}
-    <div class= "alert alert-info" role="alert" style="margin-top: 3%">
-            {{ message }}
+    <div class="alert alert-info" role="alert" style="margin-top: 3%">
+      {{ message }}
     </div>
     {% endfor %}
     {% endif %}
@@ -33,10 +33,10 @@
     </tr>
     {% for item in order.get_cart_ordered_items %}
     <tr>
-      <td >{{ forloop.counter }}</td>
+      <td>{{ forloop.counter }}</td>
 
 
-    <!-- pizza with toppings -->
+      <!-- pizza with toppings -->
       {%if item.menu_item.category == "Pizza" and "Topping" in item.menu_item.name %}
 
       {% if item.ptoppings != False %}
@@ -52,7 +52,7 @@
 
 
 
-    <!-- regular pizza with no toppings -->
+      <!-- regular pizza with no toppings -->
       {%if item.menu_item.category == "Pizza" and "Topping" not in item.menu_item.name %}
       <td>
         {{item.menu_item.sizes}}
@@ -76,7 +76,7 @@
       {% endif %}
 
 
-        <!-- subs with extras -->
+      <!-- subs with extras -->
 
       {% if item.num_extras > 0 %}
       <td>
@@ -90,7 +90,7 @@
 
       {% endif %}
 
-          <!--any menu item not a pizza or sub -->
+      <!--any menu item not a pizza or sub -->
 
       {% if item.menu_item.category != "Pizza" and item.menu_item.category != "Subs" %}
 
@@ -104,13 +104,13 @@
 
       {% endif %}
 
-          <!-- subs with extras and price for extras -->
+      <!-- subs with extras and price for extras -->
 
       {% if item.num_extras > 0 %}
       <td>
         {{ item.menu_item.price }} + {{item.extras_cost}} </td>
 
-          {% else %}
+      {% else %}
 
       <!-- price for everything not a sub -->
 
