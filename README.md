@@ -20,8 +20,9 @@ is placed through the admin (but I didn't really work on this feature,
 (a special pizza is any pizza with 4 or more toppings; a user cannot add special
    pizza with less than 4 toppings to the cart. they will be ).
 
-Models.py:
+ORDER Directory:
 
+Models.py:
 
 This project has the following models:
 A. Menu_Item: This model is the architype for any possible item on the menu,
@@ -37,7 +38,11 @@ and a manytomany relationship with OrderItems. The order class also
 contains methods for retrieving the OrderItems in the order and for calculating
  the total price of the order.
 
-Static folder has styling and some picures.
+(Also a model for toppings and extras but used tangentially in the logic)
+
+
+STATIC: folder has styling and some pictures.
+
 Views.py has the following view functions:
 
 1.  Profile:  This is the view used for loading a users particular profile page,
@@ -51,14 +56,17 @@ requirement, though orders could be viewed separately through the admin page.
 
 3.  Index. This is provides the context for the menu page, index.html.
 It includes logic for determining whether an order has been made and the
-amount of ordered items.
+amount of ordered items.  For all items that do not have toppings or extra,
+the item as added directly to the cart by making a post request to then
+add_to_cart view. For items with toppings or extras, the user is sent to the
+customize order template to choose toppings or extras
 
 4.  add_to_cart: When users click the the button to add an item to the cart,
 other than a customizable pizza or sub, a POST request is triggered to this view,
 which adds the items ordered to the users Order and redirects back to the menu
  page with a message confirming the items ordered to the user's cart.
 
-5.  customize_order: this view takes get and post requests. A get request is
+5.  customize_order: This view takes get and post requests. A get request is
  made leading the user to the customize_order template when a user clicks the
  customize button on either a pizza with toppings or a sub. The user can the
  choose the toppings or extras (if desired) and the quantity desired of that
@@ -70,13 +78,16 @@ which adds the items ordered to the users Order and redirects back to the menu
   made and toppings or extras (and the number of extras) are added to the
   ordered_item fields. The user is then redirected to the menu page.
 
-6.  7.  8 9.  checkout, updaterecords and success views serve the function of
+6.  7. 8.   checkout, updaterecords and success views serve the function of
 laoding the cart summary, checkout page and order success page. The upon
 checkout the ordered items is_ordered field is switched to true confirming
  the item has been ordered.
 
+There are also views for registering, logging in and logging out with server-Side
+validation for registering and logging in. 
+
 Pizza Directory:
 Left this pretty much as it came out of the box. I did not modify the Admin.
 
-Thank you to Matt from JustDjango for the helpful tutorial
- on e-commerce with django!
+Thank you to Matt from JustDjango for the helpful tutorial on
+e-commerce with django!
