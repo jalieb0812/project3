@@ -1,7 +1,12 @@
 {% extends 'orders/base.html' %}
 
 {% block body %}
-<table class="table-dark table-hover table-responsive-sm table-bordered text-center">
+<div class="my-menu-flex-container">
+
+
+  <h3 style="color: yellow; background: grey">Summary of all Orders</h3>
+<table class="table-dark table-hover table-responsive-sm table-bordered text-center p-3">
+
   <tr class="text-center">
     <th>Customer</th>
     <th>Date Ordered</th>
@@ -101,5 +106,5 @@
     </td>
   </tr>
 </table>
-
+</div>
 {% endblock  %}

@@ -15,7 +15,7 @@ Login
   <div class="row justify-content-center ">
 
 
-    <div class="col" style="margin-top:25%">
+    <div class="col mt-3 p-3" style="color:lightblue">
 
       <div>
 
@@ -25,7 +25,8 @@ Login
         </div>
         {% endif %}
 
-        <h1>Login</h1>
+        <h1>Welcome to JO-PIZZA!</h1>
+        <h3> Login</h3>
 
       </div>
 
@@ -50,8 +51,16 @@ Login
 
         </div>
 
-        <input class="btn btn-primary" type="submit" value="Login" />
+        <div class="row justify-content-center">
+
+        <input class="btn btn-primary mr-1" type="submit" value="Login">
       </form>
+
+      <a href="{% url 'orders:register' %}" class="btn btn-info">Register</a>
+
+      </div>
+
+
     </div>
 
 

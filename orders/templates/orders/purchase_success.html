@@ -3,7 +3,7 @@
 {% block body %}
 {% load static %}
     <div class="my-menu-flex-container">
-      <table class="table-dark table-sm table-responsive-sm table-hover table-bordered text-center" style="margin-top:10%; width:100%">
+      <table class="table-dark table-sm table-responsive-sm table-hover table-bordered text-center mt-3 p-3" style= "width:100%">
         <tr>
           <td colspan="3">
             <h3>Thank you for your purchase {{user.username}}!</h3>
@@ -18,7 +18,6 @@
         <tr>
 
           {% for item in order.get_cart_ordered_items %}
-
 
           {%if item.menu_item.category == "Pizza" and "Topping" in item.menu_item.name %}
 
@@ -38,7 +37,6 @@
             {{ item.menu_item.name }} ;
           </td>
           {% endif %}
-
 
           <!-- subs with no extras -->
 
@@ -70,8 +68,6 @@
                   {% endif %}
             {{ item.menu_item.name }}</td>
 
-
-
           {% endif %}
 
           {% if item.num_extras > 0 %}
@@ -82,7 +78,6 @@
 
           <td>{{item.menu_item.price}}</td>
           {% endif %}
-
 
         <tr>
 

@@ -13,7 +13,10 @@
         <table class="table-dark  text-center table-bordered table-hover "
          style = "margin-top:10%; width:100%" >
           <tr>
-            <td colspan="2"><h4>Check Out</h4></td>
+            <td colspan="2"><h4>Check Out. </h4>
+
+                <h6> Please confirm order details</h6>
+            </td>
           </tr>
           <tr>
             <td>
@@ -94,7 +97,7 @@
 
           <tr>
             <td></td>
-            <td>  <a <button type="submit"  href="{% url 'orders:process_payment' order.id %}"
+            <td>  <a <button type="submit"  href="{% url 'orders:updaterecords' order.id %}"
               class="pull-right btn btn-primary">Checkout</button> </a>
             </td>
           </tr>

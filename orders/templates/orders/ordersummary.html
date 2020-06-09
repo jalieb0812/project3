@@ -10,6 +10,15 @@
   <!-- <h1 style="color:white">Cart</h1> -->
   <table class=" table-dark table-sm table-responsive-sm text-center table-bordered table-hover" style="margin-top:5%; width:100%  ">
 
+    {% if messages %}
+    {% for message in messages %}
+    <div class= "alert alert-info" role="alert" style="margin-top: 3%">
+            {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+
     <tr class="bg-primary">
       <th colspan="4">
         <h1>Cart</h1>

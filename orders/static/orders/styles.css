@@ -15,15 +15,11 @@ body{
 main {
 
 
-  /* scroll horizontally as needed */
-
   position: relative;
-
-  /* center contents */
 
   align-content: center;
 
-  margin-top: 50px;
+
 
 
 }
@@ -42,7 +38,7 @@ main {
 
   justify-content: center;
 
-  margin-top: 15%;
+  margin-top: 5%;
 }
 
 
@@ -74,7 +70,7 @@ h2{
   height: 90%;
 
 
-  padding: 3px 3px;
+  padding-top: 20px;
 
   margin-top: 30px;
 

@@ -56,7 +56,7 @@
             <a class="dropdown-item" href= "login">login</a>
             <a class="dropdown-item" href="logout">logout</a>
             <a class="dropdown-item" href="register">register</a>
-            <a class="dropdown-item" href="profile">my_profiler</a>
+            <a class="dropdown-item" href="profile">Profile</a>
             {% if request.user.is_superuser %}
              <a class="dropdown-item" href="/admin">Admin</a>
             <a class="dropdown-item" href="/allorders">All Orders</a>
@@ -76,7 +76,7 @@
           {% if current_order_products != NONE %}
            <span class=" ">
 
-            <a class="nav-link text-light" href="{% url 'orders:ordersummary' %}"><h5>Go to Cart</h5></a>
+            <a class="nav-link text-light mr-auto" href="{% url 'orders:ordersummary' %}"><img src="/static/orders/img/cart.png" width="35px" height="30px"  >{{item_count}}</a>
 
           </span>
           {% endif %}
@@ -103,7 +103,7 @@
 
 
               <tr class="bg-primary">
-                      <th colspan="5"><h1>MENU</h1></th>
+                      <th colspan="5"><h1>JO PIZZA MENU</h1></th>
               </tr>
               <tr>
 
@@ -115,16 +115,16 @@
 
                 {% if current_order_products %}
                 <th><a href="{% url 'orders:ordersummary' %}"
-                  class="btn btn-warning">Go to Cart</a>
+                  class="btn btn-info">Go to Cart</a>
 
                   {% if item_count %}
 
-                Items in Cart: {{item_count}} </th>
+                # Items in Cart: {{item_count}} </th>
 
                 {% endif %}
 
                 {% else %}
-                <th>No item in cart</th>
+                <th>No items in cart</th>
                 {%endif%}
               </tr>
             </thead>
@@ -161,10 +161,10 @@
               {% if item.category == "Pizza" and "Topping" in item.name %}
 
 
-              <td><a href="{% url 'orders:customize_order' item.name %}" class="btn btn-warning">Customize</a></td>
+              <td><a href="{% url 'orders:customize_order' item.name %}" class="btn btn-info">Customize</a></td>
 
               {% elif item.category == "Subs" %}
-              <td><a href="{% url 'orders:customize_order' item.name %}" class="btn btn-warning">Add to Cart</a></td>
+              <td><a href="{% url 'orders:customize_order' item.name %}" class="btn btn-info">Customize</a></td>
             {% else %}
               <form class="" action="{% url 'orders:add_to_cart' item.id %}" method="post">
                       {% csrf_token %}
